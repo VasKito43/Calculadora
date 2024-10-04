@@ -1,10 +1,11 @@
-import { Digito } from "./calculadora";
+import { Digito , Controle} from "./calculadora";
 import CpuA3 from "./cpuA3";
 import TecladoA3 from "./tecladoA3";
 import TelaA3 from "./telaA3";
 
 const tela = new TelaA3
-const teclado = new TecladoA3
+const cpu = new CpuA3(tela);
+const teclado = new TecladoA3(cpu)
 // // tela.limpe()
 // tela.mostre(Digito.ZERO)
 // // tela.limpe()
@@ -13,8 +14,9 @@ const teclado = new TecladoA3
 // tela.limpe()
 
 teclado.digiteDigito(Digito.UM)
-teclado.digiteDigito(Digito.UM)
-teclado.digiteDigito(Digito.UM)
+// teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.UM)
+teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
 
 
 function f(value: unknown){

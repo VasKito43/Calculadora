@@ -89,7 +89,7 @@ export default class TelaA3 implements Tela{
         // console.log(digito);
     }
     limpe(): void {
-        console.clear();
+      process.stdout.write('\x1Bc');
     }
     
 }

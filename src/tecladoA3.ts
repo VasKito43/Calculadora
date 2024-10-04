@@ -2,25 +2,25 @@ import { Controle, Cpu, Digito, Operação, Teclado } from "./calculadora";
 import CpuA3 from "./cpuA3";
 
 export default class TecladoA3 implements Teclado{
-    cpu!: Cpu
+    cpu: CpuA3 | undefined
 
     constructor(cpu:CpuA3){
         this.definaCpu(cpu)
     }
 
     digiteDigito(digito: Digito): void {
-        throw new Error("Method not implemented.");
+        this.cpu?.recebaDigito(digito)
     }
     digiteOperacao(operação: Operação): void {
-        throw new Error("Method not implemented.");
+        this.cpu?.recebaOperacao(operação)
     }
     digiteControle(controle: Controle): void {
-        throw new Error("Method not implemented.");
+        this.cpu?.recebaControle(controle)
     }
-    definaCpu(cpu: Cpu): void {
+    definaCpu(cpu: CpuA3 | undefined): void {
         this.cpu = cpu
     }
-    obtenhaCpu(): Cpu {
+    obtenhaCpu(): CpuA3 | undefined{
         return this.cpu
     }
     // cpu = new CpuA3
