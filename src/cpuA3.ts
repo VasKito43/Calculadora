@@ -13,24 +13,27 @@ export default class CpuA3 implements Cpu{
         this.definaTela(tela)
     }
 
-    recebaDigito(digito: Digito): void {
+    recebaDigito(digito: Digito): void {//vereficação do zero
         this.armazeneDigito(digito)
         this.tela?.mostre(digito)
     }
     recebaOperacao(operação: Operação): void { //vereficar qual operaçaão
-        if (operação == undefined) {
-            this.operacao = operação
-        } else {
-            Controle.IGUAL
-        }
+        // preparar para verificar opações com um numero (raiz, percentual)
+        this.operacao = operação
+        this.numeros.push(Number(this.digitos.join('')))
+        this.digitos = []
+        
     }
     recebaControle(controle: Controle): void {
         switch(controle){
             case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
-            this.tela?.limpe()
-            this.tela?.mostre(Digito.ZERO)
-            break
-            case Controle.IGUAL:
+                this.tela?.limpe()
+                this.tela?.mostre(Digito.ZERO)
+                break
+            case Controle.IGUAL: //vereficar quando ocorrer erro(divisao por zero)
+                this.calculeResultado()
+                this.tela?.limpe()
+                this.mostraResultado()
             
             console.log()
         }
@@ -51,40 +54,40 @@ export default class CpuA3 implements Cpu{
             } 
             this.digitos.push(digito)
     }
-    calculeResultado(operação: Operação){
-        switch(operação){
+    calculeResultado(){
+        switch(this.operacao){
             case Operação.SOMA:
-                if (this.digitos.length < 2){
-                    this.digitos[1] = this.digitos[0]
+                if (this.numeros.length < 2){
+                    this.numeros[1] = this.numeros[0]
                 } else {
-                    this.digitos[0] = this.digitos[0] + this.digitos[1]
+                    this.numeros[0] = this.numeros[0] + this.numeros[1]
                 }
                 
             break
 
             case Operação.SUBTRAÇÃO:
-                if (this.digitos.length < 2){
-                    this.digitos[1] = this.digitos[0]
+                if (this.numeros.length < 2){
+                    this.numeros[1] = this.numeros[0]
                 } else {
-                    this.digitos[0] = this.digitos[0] - this.digitos[1]
+                    this.numeros[0] = this.numeros[0] - this.numeros[1]
                 }
             break
 
             case Operação.MULTIPLICAÇÃO:
-                if (this.digitos.length < 2){
-                    this.digitos[1] = this.digitos[0]
+                if (this.numeros.length < 2){
+                    this.numeros[1] = this.numeros[0]
                 } else {
-                    this.digitos[0] = this.digitos[0] * this.digitos[1]
+                    this.numeros[0] = this.numeros[0] * this.numeros[1]
                 }
             break
 
             case Operação.DIVISÃO:
-                if (this.digitos[1] != 0) {
-                    if (this.digitos.length < 2){
-                        this.digitos[1] = this.digitos[0]
-                        this.digitos[0] = this.digitos[0] / this.digitos[0]**2
+                if (this.numeros[1] != 0) {
+                    if (this.numeros.length < 2){
+                        this.numeros[1] = this.numeros[0]
+                        this.numeros[0] = this.numeros[0] / this.numeros[0]**2
                     } else{
-                        this.digitos[0] = this.digitos[0] / this.digitos[1]
+                        this.numeros[0] = this.numeros[0] / this.numeros[1]
                     }
                     
                 } else{
@@ -93,13 +96,44 @@ export default class CpuA3 implements Cpu{
                 
             break
             
-            case Operação.RAIZ_QUADRADA:
-                this.digitos[0] =  Math. sqrt(this.digitos[0])
-            break
+        }
+    }
 
-            case Operação.PERCENTUAL:
-                this.digitos[0] = this.digitos[0] / 100
-            break
+    mostraResultado(){
+        let numeroString = this.numeros[0].toString()
+        for (let i = 0; i < numeroString.length; i++){
+            switch(numeroString[i]){
+                case "0":
+                    this.tela?.mostre(Digito.ZERO)
+                    break
+                case "1":
+                    this.tela?.mostre(Digito.UM)
+                    break
+                case "2":
+                    this.tela?.mostre(Digito.DOIS)
+                    break
+                case "3":
+                    this.tela?.mostre(Digito.TRÊS)
+                    break
+                case "4":
+                    this.tela?.mostre(Digito.QUATRO)
+                    break
+                case "5":
+                    this.tela?.mostre(Digito.CINCO)
+                    break
+                case "6":
+                    this.tela?.mostre(Digito.SEIS)
+                    break
+                case "7":
+                    this.tela?.mostre(Digito.SETE)
+                    break
+                case "8":
+                    this.tela?.mostre(Digito.OITO)
+                    break
+                case "9":
+                    this.tela?.mostre(Digito.NOVE)
+                    break
+            }
         }
     }
 
