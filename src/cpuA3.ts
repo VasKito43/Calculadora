@@ -16,12 +16,14 @@ export default class CpuA3 implements Cpu{
     recebaDigito(digito: Digito): void {//vereficação do zero
         this.armazeneDigito(digito)
         this.tela?.mostre(digito)
+
     }
     recebaOperacao(operação: Operação): void { //vereficar qual operaçaão
         // preparar para verificar opações com um numero (raiz, percentual)
         this.operacao = operação
         this.numeros.push(Number(this.digitos.join('')))
         this.digitos = []
+
         
     }
     recebaControle(controle: Controle): void {
@@ -55,6 +57,10 @@ export default class CpuA3 implements Cpu{
             this.digitos.push(digito)
     }
     calculeResultado(){
+        if (Number(this.digitos.join('')) !== 0){
+            this.numeros.push(Number(this.digitos.join('')))
+            this.digitos = []
+        }
         switch(this.operacao){
             case Operação.SOMA:
                 if (this.numeros.length < 2){
