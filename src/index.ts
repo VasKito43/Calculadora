@@ -13,10 +13,14 @@ const teclado = new TecladoA3(cpu)
 
 // tela.limpe()
 
-teclado.digiteDigito(Digito.UM)
-teclado.digiteOperacao(Operação.SOMA)
-teclado.digiteDigito(Digito.TRÊS)
-teclado.digiteControle(Controle.IGUAL)
+teclado.digiteDigito(Digito.QUATRO)
+teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
+
+// teclado.digiteOperacao(Operação.DIVISÃO)
+// teclado.digiteDigito(Digito.ZERO)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteDigito(Digito.UM)
 // teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)

@@ -23,6 +23,15 @@ export default class CpuA3 implements Cpu{
         this.operacao = operação
         this.numeros.push(Number(this.digitos.join('')))
         this.digitos = []
+        switch(operação){
+            case Operação.RAIZ_QUADRADA: 
+                this.tela?.limpe()
+                this.numeros[0] = Math.sqrt(this.numeros[0])
+                this.mostraResultado()
+                break
+            
+        }
+
 
         
     }
@@ -71,7 +80,7 @@ export default class CpuA3 implements Cpu{
                 
             break
 
-            case Operação.SUBTRAÇÃO:
+            case Operação.SUBTRAÇÃO: //testar subtração com um numero
                 if (this.numeros.length < 2){
                     this.numeros[1] = this.numeros[0]
                 } else {
@@ -104,6 +113,7 @@ export default class CpuA3 implements Cpu{
             
         }
     }
+    
 
     mostraResultado(){
         let numeroString = this.numeros[0].toString()
