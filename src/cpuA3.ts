@@ -50,7 +50,7 @@ export default class CpuA3 implements Cpu{
                 break
             case Controle.IGUAL: //vereficar quando ocorrer erro(divisao por zero)
                 this.calculeResultado()
-                this.tela?.limpe()
+                // this.tela?.limpe()
                 this.mostraResultado()
                 break
             case Controle.SEPARADOR_DECIMAL:
