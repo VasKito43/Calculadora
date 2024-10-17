@@ -88,6 +88,11 @@ export default class TelaA3 implements Tela{
         }
         // console.log(digito);
     }
+    mostrePonto(): void{
+      console.log(`
+  **
+  **`);
+    }
     limpe(): void {
       process.stdout.write('\x1Bc');
     }

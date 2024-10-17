@@ -32,6 +32,7 @@ export enum Controle {
 
 export interface Tela {
   mostre(digito: Digito): void;
+  mostrePonto(): void;
   limpe(): void;
 }
 

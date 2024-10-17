@@ -6,8 +6,9 @@ import TelaA3 from "./telaA3";
 export default class CpuA3 implements Cpu{
     tela: Tela | undefined
     digitos: Digito[] = []
-    numeros: number[] = [] //trocar digito por numero
+    numeros: number[] = [] //
     operacao: Operação | undefined = undefined
+    separadorDecimal: boolean = false
 
     constructor(tela:Tela){
         this.definaTela(tela)
@@ -21,7 +22,13 @@ export default class CpuA3 implements Cpu{
     recebaOperacao(operação: Operação): void { //vereficar qual operaçaão
         // preparar para verificar opações com um numero (raiz, percentual)
         this.operacao = operação
-        this.numeros.push(Number(this.digitos.join('')))
+        if(this.separadorDecimal === false){
+            this.numeros.push(Number(this.digitos.join('')))
+        } else
+        {
+            this.numeros[0] += Number(this.digitos.join(''))/(10**this.digitos.length)
+            this.separadorDecimal = false
+        }
         this.digitos = []
         switch(operação){
             case Operação.RAIZ_QUADRADA: 
@@ -45,6 +52,15 @@ export default class CpuA3 implements Cpu{
                 this.calculeResultado()
                 this.tela?.limpe()
                 this.mostraResultado()
+                break
+            case Controle.SEPARADOR_DECIMAL:
+                if (this.separadorDecimal === false){
+                    this.numeros.push(Number(this.digitos.join('')))
+                    this.separadorDecimal = true
+                    this.digitos = []
+                    this.tela?.mostrePonto()
+                }
+                break
             
             console.log()
         }
@@ -59,15 +75,24 @@ export default class CpuA3 implements Cpu{
     obtenhaTela(): Tela | undefined {
         return this.tela
     }
+    // primeiro digito não pode ser ZERO
+    
     armazeneDigito(digito: Digito){
-        if (this.digitos.length === 0) {
+        if (this.digitos.length === 0 && this.separadorDecimal === false) {
                 this.tela?.limpe()
             } 
             this.digitos.push(digito)
     }
     calculeResultado(){
         if (Number(this.digitos.join('')) !== 0){
-            this.numeros.push(Number(this.digitos.join('')))
+            if(this.separadorDecimal === false){
+                this.numeros.push(Number(this.digitos.join('')))
+            } else
+            {
+                this.numeros[0] += Number(this.digitos.join(''))/(10**this.digitos.length)
+                console.log(this.numeros[0])
+                this.separadorDecimal = false
+            }
             this.digitos = []
         }
         switch(this.operacao){
@@ -148,6 +173,9 @@ export default class CpuA3 implements Cpu{
                     break
                 case "9":
                     this.tela?.mostre(Digito.NOVE)
+                    break
+                case ".":
+                    this.tela?.mostrePonto()
                     break
             }
         }
