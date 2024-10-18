@@ -1,14 +1,14 @@
 export enum Digito {
   ZERO = 0,
-  UM = 1,
-  DOIS = 2,
-  TRÊS = 3,
-  QUATRO = 4,
-  CINCO = 5,
-  SEIS = 6,
-  SETE = 7,
-  OITO = 8,
-  NOVE = 9,
+  UM,
+  DOIS,
+  TRÊS,
+  QUATRO,
+  CINCO,
+  SEIS,
+  SETE,
+  OITO,
+  NOVE,
 }
 
 export enum Operação {
@@ -30,9 +30,17 @@ export enum Controle {
   IGUAL,
 }
 
+export enum Sinal {
+  POSITIVO,
+  NEGATIVO,
+}
+
 export interface Tela {
   mostre(digito: Digito): void;
-  mostrePonto(): void;
+  mostreSeparadorDecimal(): void;
+  mostreSinal(sinal: Sinal): void;
+  mostreMemoria(): void;
+  mostreErro(): void;
   limpe(): void;
 }
 

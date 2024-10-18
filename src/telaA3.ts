@@ -1,4 +1,4 @@
-import { Digito, Tela } from "./calculadora";
+import { Digito, Sinal, Tela } from "./calculadora";
 
 export default class TelaA3 implements Tela{
     mostre(digito: Digito): void {
@@ -88,13 +88,31 @@ export default class TelaA3 implements Tela{
         }
         // console.log(digito);
     }
-    mostrePonto(): void{
+    mostreSeparadorDecimal(): void{
       console.log(`
+
+
+
   **
   **`);
     }
+    mostreSinal(sinal:Sinal): void {
+      console.log(`
+
+
+====
+    
+    `);
+    }
+    mostreMemoria(): void {
+       console.log("memoria")
+    }
+    mostreErro(): void {
+       console.log("")
+    }
     limpe(): void {
       process.stdout.write('\x1Bc');
+      // console.log("---------------------")
     }
     
 }

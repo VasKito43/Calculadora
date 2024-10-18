@@ -1,4 +1,4 @@
-import { Controle, Cpu, Digito, Operação, Teclado, Tela } from "./calculadora";
+import { Controle, Cpu, Digito, Operação, Sinal, Teclado, Tela } from "./calculadora";
 import TelaA3 from "./telaA3";
 
 
@@ -21,7 +21,15 @@ export default class CpuA3 implements Cpu{
     }
     recebaOperacao(operação: Operação): void { //vereficar qual operaçaão
         // preparar para verificar opações com um numero (raiz, percentual)
+        
+        if (this.operacao !== undefined){
+            this.operacao = operação
+            this.calculeResultado()
+            this.mostraResultado()
+        }
         this.operacao = operação
+
+
         if(this.separadorDecimal === false){
             this.numeros.push(Number(this.digitos.join('')))
         } else
@@ -50,7 +58,6 @@ export default class CpuA3 implements Cpu{
                 break
             case Controle.IGUAL: //vereficar quando ocorrer erro(divisao por zero)
                 this.calculeResultado()
-                // this.tela?.limpe()
                 this.mostraResultado()
                 break
             case Controle.SEPARADOR_DECIMAL:
@@ -58,7 +65,7 @@ export default class CpuA3 implements Cpu{
                     this.numeros.push(Number(this.digitos.join('')))
                     this.separadorDecimal = true
                     this.digitos = []
-                    this.tela?.mostrePonto()
+                    this.tela?.mostreSeparadorDecimal()
                 }
                 break
             
@@ -141,6 +148,11 @@ export default class CpuA3 implements Cpu{
     
 
     mostraResultado(){
+        
+        this.tela?.limpe()
+        if (this.numeros[0] < 0){
+            this.tela?.mostreSinal(Sinal.NEGATIVO)
+        }
         let numeroString = this.numeros[0].toString()
         for (let i = 0; i < numeroString.length; i++){
             switch(numeroString[i]){
@@ -175,7 +187,7 @@ export default class CpuA3 implements Cpu{
                     this.tela?.mostre(Digito.NOVE)
                     break
                 case ".":
-                    this.tela?.mostrePonto()
+                    this.tela?.mostreSeparadorDecimal()
                     break
             }
         }
