@@ -116,7 +116,9 @@ export default class CpuA3 implements Cpu{
                 if (this.numeros.length < 2){
                     this.numeros[1] = this.numeros[0]
                 } else {
+                    console.log(this.numeros[0], this.numeros[1])
                     this.numeros[0] = this.numeros[0] - this.numeros[1]
+                    console.log(this.numeros[0])
                 }
             break
 
@@ -191,6 +193,7 @@ export default class CpuA3 implements Cpu{
                     break
             }
         }
+        console.log(this.numeros[0])
     }
 
 
