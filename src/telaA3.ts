@@ -1,5 +1,7 @@
 import { Digito, Sinal, Tela } from "./calculadora";
 
+// limitar 8 digitos, borda tela, problema numero flutuante
+
 export default class TelaA3 implements Tela{
    private modelosDigitos = {
       [Digito.ZERO]: [
@@ -73,12 +75,12 @@ export default class TelaA3 implements Tela{
           " █████    "
       ]
   };
-   private digitos: String[][] = [
+   private display: String[][] = [
       [
          "      ",
-         "  M   ",
          "      ",
-         "  E   ",
+         "      ",
+         "      ",
          "      "
      ],
      [
@@ -139,55 +141,71 @@ export default class TelaA3 implements Tela{
       ]
      
    ]
-   private copiaDigitosLimpos: String[][]= this.digitos.slice()
+   private copiaDigitosLimpos: String[][]= this.display.slice()
     mostre(digito: Digito): void {
-      // process.stdout.write('\x1Bc');
-      this.digitos.splice(1, 1);
-      this.digitos.push(this.modelosDigitos[digito])
+      process.stdout.write('\x1Bc');
+      this.display.splice(1, 1);
+      this.display.push(this.modelosDigitos[digito])
 
       for (let i = 0; i < 5; i++) {
          let linha = "";
-         for (let j = 0; j < this.digitos.length; j++) {
-           linha += this.digitos[j][i];
+         for (let j = 0; j < this.display.length; j++) {
+           linha += this.display[j][i];
          }
          console.log(linha);
        }
 
     }
     mostreSeparadorDecimal(): void{
-      // process.stdout.write('\x1Bc');
+      process.stdout.write('\x1Bc');
       for (let i = 0; i < 5; i++) {
          let linha = "";
-         for (let j = 0; j < this.digitos.length; j++) {
-            if (i === 4 && j === this.digitos.length-1){
-               this.digitos[j][i] = this.digitos[j][i].slice(0, -3) + "██ ";
+         for (let j = 0; j < this.display.length; j++) {
+            if (i === 4 && j === this.display.length-1){
+               this.display[j][i] = this.display[j][i].slice(0, -3) + "██ ";
             }
-            linha += this.digitos[j][i];
+            linha += this.display[j][i];
          }
          console.log(linha);
        }
     }
     mostreSinal(sinal:Sinal): void {
-      // process.stdout.write('\x1Bc');
-      this.digitos[0][2] = this.digitos[0][2].slice(0, -5) + "▬▬▬  "
+      process.stdout.write('\x1Bc');
+      this.display[0][2] = this.display[0][2].slice(0, -5) + "▬▬▬  "
       // console.log(this.digitos[0][3])
       for (let i = 0; i < 5; i++) {
          let linha = "";
-         for (let j = 0; j < this.digitos.length; j++) {
-            linha += this.digitos[j][i];
+         for (let j = 0; j < this.display.length; j++) {
+            linha += this.display[j][i];
          }
          console.log(linha);
        }
     }
     mostreMemoria(): void {
-       console.log("memoria")
+      process.stdout.write('\x1Bc');
+      this.display[0][1] = this.display[0][1].slice(0, -4) + "M   "
+      for (let i = 0; i < 5; i++) {
+         let linha = "";
+         for (let j = 0; j < this.display.length; j++) {
+            linha += this.display[j][i];
+         }
+         console.log(linha);
+       }
     }
     mostreErro(): void {
-       console.log("")
+      process.stdout.write('\x1Bc');
+      this.display[0][3] = this.display[0][3].slice(0, -4) + "E   "
+      for (let i = 0; i < 5; i++) {
+         let linha = "";
+         for (let j = 0; j < this.display.length; j++) {
+            linha += this.display[j][i];
+         }
+         console.log(linha);
+       }
     }
     limpe(): void {
-      this.digitos = this.copiaDigitosLimpos.slice()
-      // process.stdout.write('\x1Bc');
+      this.display = this.copiaDigitosLimpos.slice()
+      process.stdout.write('\x1Bc');
       // console.log("---------------------")
     }
     
