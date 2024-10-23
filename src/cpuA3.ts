@@ -193,7 +193,7 @@ export default class CpuA3 implements Cpu{
                     break
             }
         }
-        // console.log(this.numeros[0])
+        console.log(this.numeros[0])
     }
 
 
