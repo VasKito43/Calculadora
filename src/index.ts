@@ -3,6 +3,12 @@ import CpuA3 from "./cpuA3";
 import TecladoA3 from "./tecladoA3";
 import TelaA3 from "./telaA3";
 
+// memoria calcula e pega o resultado
+// mrc pega o valor da memoria e coloca como segundo numero, excluindo qualquer digito que tinha nele
+// duas vezes mrc seguidas limpa memoria(usar bandeira)
+
+// implementar porcentagem, memoria, liga e desliga, renicie
+
 const tela = new TelaA3
 const cpu = new CpuA3(tela);
 const teclado = new TecladoA3(cpu)
@@ -18,30 +24,31 @@ const teclado = new TecladoA3(cpu)
 // teclado.digiteDigito(Digito.OITO)
 // teclado.digiteDigito(Digito.SETE)
 // teclado.digiteDigito(Digito.SEIS)
-// teclado.digiteDigito(Digito.CINCO)
-// teclado.digiteDigito(Digito.QUATRO)
-// teclado.digiteDigito(Digito.TRÊS)
-// teclado.digiteDigito(Digito.DOIS)
-// teclado.digiteOperacao(Operação.MULTIPLICAÇÃO)
-teclado.digiteDigito(Digito.UM)
-
 teclado.digiteDigito(Digito.CINCO)
-// teclado.digiteOperacao(Operação.SOMA)
+teclado.digiteDigito(Digito.ZERO)
+teclado.digiteDigito(Digito.UM)
+teclado.digiteDigito(Digito.TRÊS)
+teclado.digiteDigito(Digito.CINCO)
+// teclado.digiteOperacao(Operação.MULTIPLICAÇÃO)
+// teclado.digiteDigito(Digito.UM)
+
+// teclado.digiteOperacao(Operação.SUBTRAÇÃO)
+// teclado.digiteDigito(Digito.CINCO)
 // teclado.digiteDigito(Digito.DOIS)
 
-teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
+// teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
 // teclado.digiteDigito(Digito.UM)
-teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.QUATRO)
 
 // tela.limpe()
 // teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
 
-teclado.digiteOperacao(Operação.SUBTRAÇÃO)
-teclado.digiteDigito(Digito.QUATRO)
+// teclado.digiteOperacao(Operação.DIVISÃO)
+// teclado.digiteDigito(Digito.QUATRO)
 // teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.IGUAL)
-teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.UM)

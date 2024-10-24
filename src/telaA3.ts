@@ -148,23 +148,23 @@ export default class TelaA3 implements Tela{
       this.display.push(this.modelosDigitos[digito].slice())
       // console.log(this.display)
 
-      console.log("========================================================================================")
+      console.log("==========================================================================================")
       for (let i = 0; i < 5; i++) {
          let linha = "";
          for (let j = 0; j < this.display.length; j++) {
            linha += this.display[j][i];
          }
-         console.log("|" + linha + "|");
+         console.log("||" + linha + "||");
 
        }
-       console.log("========================================================================================")
+       console.log("==========================================================================================")
 
 
     }
     mostreSeparadorDecimal(): void{
       process.stdout.write('\x1Bc');
       
-      console.log("========================================================================================")
+      console.log("==========================================================================================")
       
       for (let i = 0; i < 5; i++) {
          let linha = "";
@@ -177,66 +177,65 @@ export default class TelaA3 implements Tela{
             }
             linha += this.display[j][i];
          }
-         console.log("|" + linha + "|");
+         console.log("||" + linha + "||");
 
 
        }
-      console.log("========================================================================================")
+      console.log("==========================================================================================")
 
     }
     mostreSinal(sinal:Sinal): void {
       process.stdout.write('\x1Bc');
       this.display[0][2] = this.display[0][2].slice(0, -5) + "▬▬▬  "
       // console.log(this.digitos[0][3])
-      console.log("========================================================================================")
+      console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {
          let linha = "";
          for (let j = 0; j < this.display.length; j++) {
             linha += this.display[j][i];
          }
-         console.log("|" + linha + "|");
+         console.log("||" + linha + "||");
 
        }
-      console.log("========================================================================================")
+      console.log("==========================================================================================")
 
     }
     mostreMemoria(): void {
       process.stdout.write('\x1Bc');
       this.display[0][1] = this.display[0][1].slice(0, -4) + "M   "
-      console.log("======================================================================================")
+      console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {
          let linha = "";
          for (let j = 0; j < this.display.length; j++) {
             linha += this.display[j][i];
          }
-         console.log("|" + linha + "|");
+         console.log("||" + linha + "||");
 
        }
-       console.log("======================================================================================")
+       console.log("==========================================================================================")
 
     }
     mostreErro(): void {
       process.stdout.write('\x1Bc');
       this.display[0][3] = this.display[0][3].slice(0, -4) + "E   "
-      console.log("======================================================================================")
+      console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {
          let linha = "";
          for (let j = 0; j < this.display.length; j++) {
             linha += this.display[j][i];
          }
-         console.log("|" + linha + "|");
+         console.log("||" + linha + "||");
 
        }
-       console.log("======================================================================================")
+       console.log("==========================================================================================")
 
     }
     limpe(): void {
       this.display = this.copiaDigitosLimpos.slice()
       process.stdout.write('\x1Bc');
-      // console.log("---------------------")
     }
     
 }

@@ -1,200 +1,196 @@
 import { Controle, Cpu, Digito, Operação, Sinal, Teclado, Tela } from "./calculadora";
 import TelaA3 from "./telaA3";
+import Decimal from 'decimal.js';
 
+export default class CpuA3 implements Cpu {
+    private tela: Tela | undefined;
+    private digitos: Digito[] = [];
+    private numeros: Decimal[] = [];
+    private memoria: Decimal = new Decimal(0)
+    private operacao: Operação | undefined = undefined;
+    private separadorDecimal: boolean = false;
+    private memoriaAtivada: boolean = false;
 
-
-export default class CpuA3 implements Cpu{
-    tela: Tela | undefined
-    digitos: Digito[] = []
-    numeros: number[] = [] //
-    operacao: Operação | undefined = undefined
-    separadorDecimal: boolean = false
-
-    constructor(tela:Tela){
-        this.definaTela(tela)
+    constructor(tela: Tela) {
+        this.definaTela(tela);
     }
 
-    recebaDigito(digito: Digito): void {//vereficação do zero
-        this.armazeneDigito(digito)
-        this.tela?.mostre(digito)
-
+    recebaDigito(digito: Digito): void {
+        this.armazeneDigito(digito);
+        this.tela?.mostre(digito);
     }
-    recebaOperacao(operação: Operação): void { //vereficar qual operaçaão
-        // preparar para verificar opações com um numero (raiz, percentual)
-        
-        if (this.operacao !== undefined){
-            this.operacao = operação
-            this.calculeResultado()
-            this.mostraResultado()
-        }
-        this.operacao = operação
 
-
-        if(this.separadorDecimal === false){
-            this.numeros.push(Number(this.digitos.join('')))
-        } else
-        {
-            this.numeros[0] += Number(this.digitos.join(''))/(10**this.digitos.length)
-            this.separadorDecimal = false
+    recebaOperacao(operação: Operação): void {
+        if (this.operacao !== undefined) {
+            this.calculeResultado();
+            this.mostraResultado();
         }
-        this.digitos = []
-        switch(operação){
-            case Operação.RAIZ_QUADRADA: 
-                this.tela?.limpe()
-                this.numeros[0] = Math.sqrt(this.numeros[0])
-                this.mostraResultado()
-                break
-            
+        this.operacao = operação;
+
+        if (this.separadorDecimal === false) {
+            this.adicionaNumeroOperando()
+        } else {
+            this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
+            this.separadorDecimal = false;
         }
 
-
-        
+        this.digitos = [];
+        switch (operação) {
+            case Operação.RAIZ_QUADRADA:
+                this.tela?.limpe();
+                this.numeros[0] = this.numeros[0].sqrt();
+                this.mostraResultado();
+                break;
+        }
     }
+
     recebaControle(controle: Controle): void {
-        switch(controle){
+        switch (controle) {
             case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
-                this.tela?.limpe()
-                this.tela?.mostre(Digito.ZERO)
-                break
-            case Controle.IGUAL: //vereficar quando ocorrer erro(divisao por zero)
-                this.calculeResultado()
-                this.mostraResultado()
-                break
-            case Controle.SEPARADOR_DECIMAL:
-                if (this.separadorDecimal === false){
-                    this.numeros.push(Number(this.digitos.join('')))
-                    this.separadorDecimal = true
-                    this.digitos = []
-                    this.tela?.mostreSeparadorDecimal()
+                this.tela?.limpe();
+                this.tela?.mostre(Digito.ZERO);
+                break;
+            case Controle.IGUAL:
+                this.calculeResultado();
+                if (this.numeros.length !== 0){
+                    this.mostraResultado();
                 }
-                break
-            
-            console.log()
+                break;
+            case Controle.SEPARADOR_DECIMAL:
+                if (!this.separadorDecimal) {
+                    this.adicionaNumeroOperando()
+                    this.separadorDecimal = true;
+                    this.digitos = [];
+                    this.tela?.mostreSeparadorDecimal();
+                }
+                break;
+            case Controle.MEMÓRIA_SOMA:
         }
-        
     }
-    reinicie(): void { //ac
+
+    reinicie(): void {
         throw new Error("Method not implemented.");
     }
+
     definaTela(tela: Tela | undefined): void {
-        this.tela = tela
+        this.tela = tela;
     }
+
     obtenhaTela(): Tela | undefined {
-        return this.tela
+        return this.tela;
     }
-    // primeiro digito não pode ser ZERO
-    
-    armazeneDigito(digito: Digito){
+
+    private armazeneDigito(digito: Digito): void {
         if (this.digitos.length === 0 && this.separadorDecimal === false) {
-                this.tela?.limpe()
-            } 
-            this.digitos.push(digito)
-    }
-    calculeResultado(){
-        if (Number(this.digitos.join('')) !== 0){
-            if(this.separadorDecimal === false){
-                this.numeros.push(Number(this.digitos.join('')))
-            } else
-            {
-                this.numeros[0] += Number(this.digitos.join(''))/(10**this.digitos.length)
-                console.log(this.numeros[0])
-                this.separadorDecimal = false
-            }
-            this.digitos = []
+            this.tela?.limpe();
         }
-        switch(this.operacao){
-            case Operação.SOMA:
-                if (this.numeros.length < 2){
-                    this.numeros[1] = this.numeros[0]
-                } else {
-                    this.numeros[0] = this.numeros[0] + this.numeros[1]
-                }
-                
-            break
+        this.digitos.push(digito);
+    }
 
-            case Operação.SUBTRAÇÃO: //testar subtração com um numero
-                if (this.numeros.length < 2){
-                    this.numeros[1] = this.numeros[0]
-                } else {
-                    // console.log(this.numeros[0], this.numeros[1])
-                    this.numeros[0] = this.numeros[0] - this.numeros[1]
-                    // console.log(this.numeros[0])
-                }
-            break
-
-            case Operação.MULTIPLICAÇÃO:
-                if (this.numeros.length < 2){
-                    this.numeros[1] = this.numeros[0]
-                } else {
-                    this.numeros[0] = this.numeros[0] * this.numeros[1]
-                }
-            break
-
-            case Operação.DIVISÃO:
-                if (this.numeros[1] != 0) {
-                    if (this.numeros.length < 2){
-                        this.numeros[1] = this.numeros[0]
-                        this.numeros[0] = this.numeros[0] / this.numeros[0]**2
-                    } else{
-                        this.numeros[0] = this.numeros[0] / this.numeros[1]
+    private calculeResultado() {
+        
+        if (this.digitos.length > 0 && new Decimal(this.digitos.join('')).toNumber() !== 0) {
+            if (!this.separadorDecimal) {
+                this.adicionaNumeroOperando()
+            } else {
+                this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
+                this.separadorDecimal = false;
+            }
+            this.digitos = [];
+        }
+    
+        
+        if (this.numeros.length > 0) {
+            switch (this.operacao) {
+                case Operação.SOMA:
+                    if (this.numeros.length < 2) {
+                        this.numeros[1] = this.numeros[0];
+                    } else {
+                        this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
                     }
-                    
-                } else{
-                   console.log("erro")//mudar futuralmente     
-                }
-                
-            break
-            
+                    break;
+    
+                case Operação.SUBTRAÇÃO:
+                    if (this.numeros.length < 2) {
+                        this.numeros[1] = this.numeros[0];
+                    } else {
+                        this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                    }
+                    break;
+    
+                case Operação.MULTIPLICAÇÃO:
+                    if (this.numeros.length < 2) {
+                        this.numeros[1] = this.numeros[0];
+                    } else {
+                        this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                    }
+                    break;
+    
+                case Operação.DIVISÃO:
+                    if (this.numeros.length >= 2 && !this.numeros[1].equals(0)) {
+                        this.numeros[0] = this.numeros[0].div(this.numeros[1]);
+                    } else {
+                        console.log("Erro: Divisão por zero!");
+                    }
+                    break;
+                case undefined:
+                    this.numeros = []
+                    break
+            }
+        } else {
+            console.log("Erro: Nenhum número para calcular!");
         }
     }
     
 
-    mostraResultado(){
-        
-        this.tela?.limpe()
-        if (this.numeros[0] < 0){
-            this.tela?.mostreSinal(Sinal.NEGATIVO)
+    private mostraResultado(): void {
+        this.tela?.limpe();
+        if (this.numeros[0].isNegative()) {
+            this.tela?.mostreSinal(Sinal.NEGATIVO);
         }
-        let numeroString = this.numeros[0].toString()
-        for (let i = 0; i < numeroString.length; i++){
-            switch(numeroString[i]){
+
+        let numeroString = this.numeros[0].toString();
+        for (let i = 0; i < numeroString.length; i++) {
+            switch (numeroString[i]) {
                 case "0":
-                    this.tela?.mostre(Digito.ZERO)
-                    break
+                    this.tela?.mostre(Digito.ZERO);
+                    break;
                 case "1":
-                    this.tela?.mostre(Digito.UM)
-                    break
+                    this.tela?.mostre(Digito.UM);
+                    break;
                 case "2":
-                    this.tela?.mostre(Digito.DOIS)
-                    break
+                    this.tela?.mostre(Digito.DOIS);
+                    break;
                 case "3":
-                    this.tela?.mostre(Digito.TRÊS)
-                    break
+                    this.tela?.mostre(Digito.TRÊS);
+                    break;
                 case "4":
-                    this.tela?.mostre(Digito.QUATRO)
-                    break
+                    this.tela?.mostre(Digito.QUATRO);
+                    break;
                 case "5":
-                    this.tela?.mostre(Digito.CINCO)
-                    break
+                    this.tela?.mostre(Digito.CINCO);
+                    break;
                 case "6":
-                    this.tela?.mostre(Digito.SEIS)
-                    break
+                    this.tela?.mostre(Digito.SEIS);
+                    break;
                 case "7":
-                    this.tela?.mostre(Digito.SETE)
-                    break
+                    this.tela?.mostre(Digito.SETE);
+                    break;
                 case "8":
-                    this.tela?.mostre(Digito.OITO)
-                    break
+                    this.tela?.mostre(Digito.OITO);
+                    break;
                 case "9":
-                    this.tela?.mostre(Digito.NOVE)
-                    break
+                    this.tela?.mostre(Digito.NOVE);
+                    break;
                 case ".":
-                    this.tela?.mostreSeparadorDecimal()
-                    break
+                    this.tela?.mostreSeparadorDecimal();
+                    break;
             }
         }
-        console.log(this.numeros[0])
+        // console.log(this.numeros[0].toString());
     }
 
-
+    private adicionaNumeroOperando() {
+        this.numeros.push(new Decimal(this.digitos.join('')));
+    }
 }
