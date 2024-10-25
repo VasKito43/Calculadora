@@ -6,8 +6,9 @@ export default class CpuA3 implements Cpu {
     private tela: Tela | undefined;
     private digitos: Digito[] = [];
     private numeros: Decimal[] = [];
-    private memoria: Decimal = new Decimal(0)
-    private operacao: Operação | undefined = undefined;
+    private memoria: Decimal = new Decimal(0);
+    private controles: Controle[] | undefined[] = [undefined, undefined];
+    private operacao: Operação[] | undefined[] = [undefined, undefined];
     private separadorDecimal: boolean = false;
     private memoriaAtivada: boolean = false;
 
@@ -16,19 +17,28 @@ export default class CpuA3 implements Cpu {
     }
 
     recebaDigito(digito: Digito): void {
+        if (this.memoriaAtivada === true){
+            this.digitos = []
+            this.tela?.limpe()
+            this.memoriaAtivada = false
+        }
         this.armazeneDigito(digito);
         this.tela?.mostre(digito);
+        console.log(this.digitos)
     }
 
     recebaOperacao(operação: Operação): void {
-        if (this.operacao !== undefined) {
+        if (this.operacao[1] !== undefined) {
             this.calculeResultado();
             this.mostraResultado();
         }
-        this.operacao = operação;
+        this.operacao[0] = this.operacao[1]
+        this.operacao[1] = (operação)
 
         if (this.separadorDecimal === false) {
-            this.adicionaNumeroOperando()
+            if (this.digitos.length !== 0){
+                this.adicionaNumeroOperando()
+            }
         } else {
             this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
             this.separadorDecimal = false;
@@ -45,13 +55,18 @@ export default class CpuA3 implements Cpu {
     }
 
     recebaControle(controle: Controle): void {
+        this.controles[0] = this.controles[1]
+        this.controles[1] = controle
         switch (controle) {
             case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
                 this.tela?.limpe();
                 this.tela?.mostre(Digito.ZERO);
                 break;
             case Controle.IGUAL:
-                this.calculeResultado();
+                if (this.memoriaAtivada === false){
+                    this.calculeResultado();
+                }
+                this.memoriaAtivada = false
                 if (this.numeros.length !== 0){
                     this.mostraResultado();
                 }
@@ -65,6 +80,25 @@ export default class CpuA3 implements Cpu {
                 }
                 break;
             case Controle.MEMÓRIA_SOMA:
+                if (this.operacao[1] === undefined){
+                    this.memoria = this.memoria.plus(new Decimal(this.digitos.join('')))
+                    this.memoriaAtivada = true
+                }else {
+                    this.calculeResultado()
+                    this.memoria = this.memoria.plus(this.numeros[0])
+                    this.memoriaAtivada = true
+                }
+                break
+            case Controle.MEMÓRIA_SUBTRAÇÃO:
+                if (this.operacao[1] === undefined){
+                    this.memoria = this.memoria.minus(new Decimal(this.digitos.join('')))
+                    this.memoriaAtivada = true
+                }else {
+                    this.calculeResultado()
+                    this.memoria = this.memoria.minus(this.numeros[0])
+                    this.memoriaAtivada = true
+                }
+                break
         }
     }
 
@@ -92,6 +126,7 @@ export default class CpuA3 implements Cpu {
         if (this.digitos.length > 0 && new Decimal(this.digitos.join('')).toNumber() !== 0) {
             if (!this.separadorDecimal) {
                 this.adicionaNumeroOperando()
+                // console.log(this.numeros)
             } else {
                 this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
                 this.separadorDecimal = false;
@@ -101,7 +136,7 @@ export default class CpuA3 implements Cpu {
     
         
         if (this.numeros.length > 0) {
-            switch (this.operacao) {
+            switch (this.operacao[1]) {
                 case Operação.SOMA:
                     if (this.numeros.length < 2) {
                         this.numeros[1] = this.numeros[0];
@@ -133,9 +168,7 @@ export default class CpuA3 implements Cpu {
                         console.log("Erro: Divisão por zero!");
                     }
                     break;
-                case undefined:
-                    this.numeros = []
-                    break
+
             }
         } else {
             console.log("Erro: Nenhum número para calcular!");
@@ -188,6 +221,9 @@ export default class CpuA3 implements Cpu {
             }
         }
         // console.log(this.numeros[0].toString());
+        console.log(this.operacao)
+        console.log(this.memoria)
+        console.log(this.controles)
     }
 
     private adicionaNumeroOperando() {
