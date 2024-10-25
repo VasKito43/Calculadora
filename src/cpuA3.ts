@@ -230,3 +230,4 @@ export default class CpuA3 implements Cpu {
         this.numeros.push(new Decimal(this.digitos.join('')));
     }
 }
+ 
