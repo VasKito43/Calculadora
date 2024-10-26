@@ -104,7 +104,7 @@ export default class CpuA3 implements Cpu {
                     this.memoria = this.memoria.plus(this.numeros[0])
                     this.digitos = []
                     this.memoriaAtivada = true
-                }else if (this.digitos.length !== 0){
+                }else if (this.digitos.length !== 0){//************************************* */
                     this.calculeResultado()
                     this.memoria = this.memoria.plus(this.numeros[0])
                     this.memoriaAtivada = true
