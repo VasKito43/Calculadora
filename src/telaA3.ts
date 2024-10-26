@@ -186,7 +186,14 @@ export default class TelaA3 implements Tela{
     }
     mostreSinal(sinal:Sinal): void {
       process.stdout.write('\x1Bc');
-      this.display[0][2] = this.display[0][2].slice(0, -5) + "▬▬▬  "
+      switch (sinal){
+         case Sinal.POSITIVO:
+            this.display[0][2] = this.display[0][2].slice(0, -5) + "     "
+            break
+         case Sinal.NEGATIVO:
+            this.display[0][2] = this.display[0][2].slice(0, -5) + "▬▬▬  "
+            break
+      }
       // console.log(this.digitos[0][3])
       console.log("==========================================================================================")
 
