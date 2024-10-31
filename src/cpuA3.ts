@@ -70,8 +70,7 @@ export default class CpuA3 implements Cpu {
                         if (this.operacao[0] === Operação.MULTIPLICAÇÃO) {
                             this.numeros[1] = this.numeros[1].dividedBy(100);
                             this.numeros[0] = this.numeros[0].times(this.numeros[1]);
-                            break
-                            this.mostraResultado();
+                            
                             
                         }
                         if (this.operacao[0] === Operação.SUBTRAÇÃO) {
@@ -315,46 +314,9 @@ export default class CpuA3 implements Cpu {
         this.numeros.push(new Decimal(this.digitos.join('')));
     }
 
-    private adicionaMemoriaDigitos(){
-        this.digitos = []
-        let memoriaString = this.memoria.toString();
-        for (let i = 0; i < memoriaString.length; i++) {
-            switch (memoriaString[i]) {
-                case "0":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "1":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "2":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "3":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "4":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "5":
-                    this.digitos.push(Digito.ZERO);
-                    break;
-                case "6":
-                    this.digitos.push(Digito.ZERO)
-                    break;
-                case "7":
-                    this.digitos.push(Digito.ZERO)
-                    break;
-                case "8":
-                    this.digitos.push(Digito.ZERO)
-                    break;
-                case "9":
-                    this.digitos.push(Digito.ZERO)
-                    break;
-                case ".":
-                    this.tela?.mostreSeparadorDecimal();
-                    break;
-            }
-        }
-    }
+    
+            
+        
+    
 }
  
