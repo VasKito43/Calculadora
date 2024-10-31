@@ -104,9 +104,11 @@ export default class CpuA3 implements Cpu {
                 this.tela?.mostre(Digito.ZERO);
                 break;
             case Controle.IGUAL:
-                if (this.memoriaAtivada === false && this.digitos.length !== 0){
+                if (this.memoriaAtivada === false){
                     this.calculeResultado();
                 }
+                // this.calculeResultado();
+
                 if (this.operacao[1] === undefined && this.numeros.length === 2){
                     this.numeros[0] = this.numeros[1]
                 }
@@ -136,7 +138,7 @@ export default class CpuA3 implements Cpu {
                     this.memoria = this.memoria.plus(this.numeros[0])
                     this.digitos = []
                     this.memoriaAtivada = true
-                }else if (this.digitos.length !== 0){//************************************* */
+                }else {//************************************* */
                     this.calculeResultado()
                     this.memoria = this.memoria.plus(this.numeros[0])
                     this.memoriaAtivada = true
@@ -166,11 +168,13 @@ export default class CpuA3 implements Cpu {
                 } else {
                     this.numeros[1] = this.memoria
                 }
-                this.memoriaAtivada = true
+                this.digitos = []
+                // this.memoriaAtivada = true
                 if (this.controles[0] === Controle.MEMÓRIA_LEITURA_LIMPEZA && this.controles[1] === Controle.MEMÓRIA_LEITURA_LIMPEZA){
                     this.memoria = new Decimal(0)
                     this.calculeResultado()
                 }
+                // this.calculeResultado()
                 break
         }
     }
@@ -299,6 +303,8 @@ export default class CpuA3 implements Cpu {
         console.log(this.numeros)
         console.log(this.operacao)
         console.log(this.memoria)
+        console.log(this.memoriaAtivada)
+        console.log(this.digitos)
         console.log(this.controles)
     }
 

@@ -141,7 +141,7 @@ export default class TelaA3 implements Tela{
       ]
      
    ]
-   private copiaDigitosLimpos: String[][]= this.display.slice()
+   private copiaDisplay: String[][]= this.display.slice()
     mostre(digito: Digito): void {
       process.stdout.write('\x1Bc');
       this.display.splice(1, 1);
@@ -241,7 +241,7 @@ export default class TelaA3 implements Tela{
 
     }
     limpe(): void {
-      this.display = this.copiaDigitosLimpos.slice()
+      this.display = this.copiaDisplay.slice()
       process.stdout.write('\x1Bc');
     }
     
