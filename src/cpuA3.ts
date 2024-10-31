@@ -60,6 +60,32 @@ export default class CpuA3 implements Cpu {
                 this.numeros[0] = this.numeros[0].sqrt();
                 this.mostraResultado();
                 break;
+                case Operação.PERCENTUAL:
+                    if (this.numeros.length > 0){
+                        if (this.numeros.length === 1) {
+                            this.numeros[0] = new Decimal(0)
+                            this.mostraResultado();
+                        }
+                        if (this.numeros.length > 1){
+                            if (this.operacao[0] === Operação.MULTIPLICAÇÃO) {
+                                this.numeros[1] = this.numeros[1].dividedBy(100);
+                                this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                            }}
+                            if (this.operacao[0] === Operação.SUBTRAÇÃO) {
+                                this.numeros[1] = this.numeros[1].dividedBy(100);
+                                this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                            }
+                            if (this.operacao[0] === Operação.DIVISÃO) {
+                                this.numeros[1] = this.numeros[1].dividedBy(100);
+                                this.numeros[0] = this.numeros[0].div(this.numeros[1]);
+                            }
+                            if (this.operacao[0] === Operação.SOMA) {
+                                this.numeros[1] = this.numeros[1].dividedBy(100);
+                                this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
+                            }
+
+                                
+                            }
         }
     }
 
