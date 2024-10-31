@@ -12,13 +12,19 @@ import TelaA3 from "./telaA3";
 const tela = new TelaA3
 const cpu = new CpuA3(tela);
 const teclado = new TecladoA3(cpu);
+tela.mostre(Digito.ZERO)
+
+
+
+
+
 // // tela.limpe()
 // tela.mostre(Digito.ZERO)
 // // tela.limpe()
 // tela.mostre(Digito.UM)
-teclado.digiteDigito(Digito.UM)
-teclado.digiteDigito(Digito.DOIS)
-teclado.digiteDigito(Digito.TRÊS)
+// teclado.digiteDigito(Digito.UM)
+// teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteOperacao(Operação.SOMA)
@@ -58,18 +64,18 @@ teclado.digiteDigito(Digito.TRÊS)
 
 
 // teclado.digiteControle(Controle.IGUAL)
-teclado.digiteControle(Controle.IGUAL)
-teclado.digiteDigito(Digito.UM)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteDigito(Digito.UM)
 // teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
 // teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteControle(Controle.MEMÓRIA_SOMA)
 // teclado.digiteDigito(Digito.UM)
 
 
-teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.UM)
 // teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
-
+// teclado.digiteControle(Controle.DESATIVAÇÃO)
 
 // tela.mostreMemoria()
 // tela.mostreErro()
