@@ -29,16 +29,15 @@ export default class CpuA3 implements Cpu {
         }
         this.armazeneDigito(digito);
         this.tela?.mostre(digito);
-        console.log(this.digitos)
     }
 
     recebaOperacao(operação: Operação): void {
 
-        //if (this.operacao[1] !== undefined) {
-            //this.calculeResultado();
-            //this.mostraResultado();
-            // this.numeros[1] = new Decimal(0)
-        //}
+        if (this.operacao[1] !== undefined && operação !== Operação.PERCENTUAL) {
+            this.calculeResultado();
+            this.mostraResultado();
+            
+        }
         
         this.operacao[0] = this.operacao[1]
         this.operacao[1] = (operação)
@@ -77,16 +76,17 @@ export default class CpuA3 implements Cpu {
                         }
                         if (this.operacao[0] === Operação.SUBTRAÇÃO) {
                             this.numeros[1] = this.numeros[1].dividedBy(100);
+                            this.numeros[1] = this.numeros[1].times(this.numeros[0])
                             this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
                         }
                         if (this.operacao[0] === Operação.DIVISÃO) {
                             this.numeros[1] = this.numeros[1].dividedBy(100);
-                            this.numeros[0] = this.numeros[0];
-                            this.mostraResultado();
-                            break;
+                            this.numeros[0] = this.numeros[0].div(this.numeros[1])
                         }
                         if (this.operacao[0] === Operação.SOMA) {
                             this.numeros[1] = this.numeros[1].dividedBy(100);
+                            this.numeros[1] = this.numeros[1].times(this.numeros[0])
+                            this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
                             
                         }
                             
@@ -251,7 +251,6 @@ export default class CpuA3 implements Cpu {
 
     private mostraResultado(): void {
         this.tela?.limpe();
-        console.log(this.numeros)
         if (this.numeros[0].isNegative()) {
             this.tela?.mostreSinal(Sinal.NEGATIVO);
         } else{
