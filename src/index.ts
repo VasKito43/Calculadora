@@ -7,7 +7,6 @@ import TelaA3 from "./telaA3";
 
 //liga e desliga, renicie, erro, 8 digitos
 // manter m na tela quando executa operação, salvar na copia
-//mrc
 
 const tela = new TelaA3
 const cpu = new CpuA3(tela);
@@ -23,18 +22,23 @@ tela.mostre(Digito.ZERO)
 // // tela.limpe()
 // tela.mostre(Digito.UM)
 // teclado.digiteDigito(Digito.UM)
+
+// teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
+teclado.digiteDigito(Digito.QUATRO)
+teclado.digiteOperacao(Operação.DIVISÃO)
 // teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteOperacao(Operação.SOMA)
 // teclado.digiteDigito(Digito.DOIS)
-// teclado.digiteOperacao(Operação.PERCENTUAL)
-// teclado.digiteControle(Controle.MEMÓRIA_SOMA)
 // teclado.digiteDigito(Digito.SETE)
 // teclado.digiteDigito(Digito.SEIS)
 // teclado.digiteDigito(Digito.CINCO)
-// teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.UM)
 // teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteDigito(Digito.CINCO)
@@ -42,8 +46,8 @@ tela.mostre(Digito.ZERO)
 
 // teclado.digiteOperacao(Operação.SOMA)
 // teclado.digiteDigito(Digito.UM)
-//teclado.digiteDigito(Digito.CINCO)
-//teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.CINCO)
+// teclado.digiteDigito(Digito.DOIS)
 
 // teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
 // teclado.digiteDigito(Digito.UM)
@@ -54,9 +58,8 @@ tela.mostre(Digito.ZERO)
 // teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
 
 // teclado.digiteOperacao(Operação.DIVISÃO)
-// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.UM)
-// teclado.digiteControle(Controle.MEMÓRIA_LEITURA_LIMPEZA)
+// teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
 // teclado.digiteOperacao(Operação.SOMA)
 // teclado.digiteDigito(Digito.UM)
 // teclado.digiteControle(Controle.MEMÓRIA_LEITURA_LIMPEZA)
@@ -72,7 +75,9 @@ tela.mostre(Digito.ZERO)
 // teclado.digiteDigito(Digito.UM)
 
 
-// teclado.digiteControle(Controle.IGUAL)
+teclado.digiteControle(Controle.IGUAL)
+teclado.digiteControle(Controle.IGUAL)
+teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.UM)
 // teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
 // teclado.digiteControle(Controle.DESATIVAÇÃO)

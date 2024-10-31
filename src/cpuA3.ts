@@ -20,7 +20,7 @@ export default class CpuA3 implements Cpu {
 
     
     recebaDigito(digito: Digito): void {
-        if (this.erro === false){
+        if (this.erro === false && this.digitos.length < 8){
             if (this.memoriaAtivada === true){
                 this.digitos = []
                 this.tela?.limpe()
@@ -49,9 +49,8 @@ export default class CpuA3 implements Cpu {
             this.operacao[1] = (operação)
     
             if (this.separadorDecimal === false) {
-                if (this.digitos.length !== 0){
                     this.adicionaNumeroOperando()
-                }
+
             } else {
                 this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
                 this.separadorDecimal = false;
@@ -185,13 +184,7 @@ export default class CpuA3 implements Cpu {
                     // this.calculeResultado()
                     break
                 case Controle.DESATIVAÇÃO:
-                    this.digitos = [];
-                    this.numeros = [];
-                    this.memoria = new Decimal(0);
-                    this.controles = [undefined, undefined];
-                    this.operacao = [undefined, undefined];
-                    this.separadorDecimal = false;
-                    this.memoriaAtivada = false;
+                    this.reinicie()
                     this.tela?.limpe()
                     break
             }
@@ -206,6 +199,7 @@ export default class CpuA3 implements Cpu {
         this.operacao = [undefined, undefined];
         this.separadorDecimal = false;
         this.memoriaAtivada = false;
+        this.erro = false;
         this.tela?.limpe()
         this.tela?.mostre(Digito.ZERO)
     }
@@ -230,7 +224,6 @@ export default class CpuA3 implements Cpu {
         if (this.digitos.length > 0 && new Decimal(this.digitos.join('')).toNumber() !== 0) {
             if (!this.separadorDecimal) {
                 this.adicionaNumeroOperando()
-                // console.log(this.numeros)
             } else {
                 this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
                 this.separadorDecimal = false;
@@ -240,46 +233,55 @@ export default class CpuA3 implements Cpu {
     
         
         if (this.numeros.length > 0) {
-            switch (this.operacao[1]) {
-                case Operação.SOMA:
-                    if (this.numeros.length < 2) {
-                        this.numeros[1] = this.numeros[0];
-                    } else {
-                        this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
-                    }
-                    break;
-    
-                case Operação.SUBTRAÇÃO:
-                    if (this.numeros.length < 2) {
-                        this.numeros[1] = this.numeros[0];
-                    } else {
-                        this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
-                    }
-                    break;
-    
-                case Operação.MULTIPLICAÇÃO:
-                    if (this.numeros.length < 2) {
-                        this.numeros[1] = this.numeros[0];
-                    } else {
-                        this.numeros[0] = this.numeros[0].times(this.numeros[1]);
-                    }
-                    break;
-    
-                case Operação.DIVISÃO:
-                    if (this.numeros.length >= 2 && !this.numeros[1].equals(0)) {
-                        this.numeros[0] = this.numeros[0].div(this.numeros[1]);
-                    } else {
-                        this.erro = true;
-                        this.tela?.mostreErro()
-                    }
-                    break;
+            if (this.numeros.length < 2 && this.operacao[1] === Operação.DIVISÃO) {
+                let multiplicador = new Decimal(1).div(this.numeros[0].pow(2))
+                this.numeros[1] = this.numeros[0];
+                this.numeros[0] = this.numeros[0].times(multiplicador)
+            } else if (this.numeros.length < 2) {
+                this.numeros[1] = this.numeros[0];
+            } else{
+                switch (this.operacao[1]) {
+                    case Operação.SOMA:
+                            this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
+                        break;
+        
+                    case Operação.SUBTRAÇÃO:
+                            this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                        break;
+        
+                    case Operação.MULTIPLICAÇÃO:
+                            this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                        break;
+        
+                    case Operação.DIVISÃO:
 
+                        if(this.numeros[1].equals(0)) {
+                            this.ativaErro
+                        } else {
+                            this.numeros[0] = this.numeros[0].div(this.numeros[1]);
+                        }
+                        
+                        break;
+    
+                }
             }
         } 
     }
     
 
     private mostraResultado(): void {
+        let digitosMap = [
+            Digito.ZERO,
+            Digito.UM,
+            Digito.DOIS,
+            Digito.TRÊS,
+            Digito.QUATRO,
+            Digito.CINCO,
+            Digito.SEIS,
+            Digito.SETE,
+            Digito.OITO,
+            Digito.NOVE
+        ];
         this.tela?.limpe();
         if (this.numeros[0].isNegative()) {
             this.tela?.mostreSinal(Sinal.NEGATIVO);
@@ -288,59 +290,54 @@ export default class CpuA3 implements Cpu {
         }
 
         let numeroString = this.numeros[0].toString();
+        
+        if (numeroString.replace("-", "").replace(".", "").length > 8) {
+            let quantidadeLimite = 8
+            if (numeroString.includes("-")){
+                quantidadeLimite += 1
+            }
+            if(numeroString.replace("-", "").slice(0,8).includes(".")){
+                quantidadeLimite += 1
+            }
+            numeroString = numeroString.slice(0, quantidadeLimite)
+            this.ativaErro()
+        } 
+
         for (let i = 0; i < numeroString.length; i++) {
-            switch (numeroString[i]) {
-                case "0":
-                    this.tela?.mostre(Digito.ZERO);
-                    break;
-                case "1":
-                    this.tela?.mostre(Digito.UM);
-                    break;
-                case "2":
-                    this.tela?.mostre(Digito.DOIS);
-                    break;
-                case "3":
-                    this.tela?.mostre(Digito.TRÊS);
-                    break;
-                case "4":
-                    this.tela?.mostre(Digito.QUATRO);
-                    break;
-                case "5":
-                    this.tela?.mostre(Digito.CINCO);
-                    break;
-                case "6":
-                    this.tela?.mostre(Digito.SEIS);
-                    break;
-                case "7":
-                    this.tela?.mostre(Digito.SETE);
-                    break;
-                case "8":
-                    this.tela?.mostre(Digito.OITO);
-                    break;
-                case "9":
-                    this.tela?.mostre(Digito.NOVE);
-                    break;
-                case ".":
-                    this.tela?.mostreSeparadorDecimal();
-                    break;
+        
+            if (numeroString[i] === ".") {
+                this.tela?.mostreSeparadorDecimal();
+            } else {
+                this.tela?.mostre(digitosMap[Number(numeroString[i])]);
             }
         }
-        // console.log(this.numeros[0].toString());
-        console.log(this.numeros)
-        console.log(this.operacao)
-        console.log(this.memoria)
-        console.log(this.memoriaAtivada)
-        console.log(this.digitos)
-        console.log(this.controles)
+        // console.log(this.numeros)
+        // console.log(this.operacao)
+        // console.log(this.memoria)
+        // console.log(this.memoriaAtivada)
+        // console.log(this.digitos)
+        // console.log(this.controles)
+        // console.log(numeroString.replace("-", "").replace(".", "").slice(0, 8).length)
+        // console.log(this.erro)
+
     }
 
     private adicionaNumeroOperando() {
         if (this.numeros.length === 2){
             this.numeros.pop()
         }
-        this.numeros.push(new Decimal(this.digitos.join('')));
+        if (this.digitos.join('') === ""){
+            this.numeros.push(new Decimal(0));
+        }else{
+            this.numeros.push(new Decimal(this.digitos.join('')));
+        }
     }
 
+    private ativaErro(){
+        this.erro = true;
+        this.tela?.mostreErro();
+    }
+    
     
             
         
