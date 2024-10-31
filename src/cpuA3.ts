@@ -33,11 +33,12 @@ export default class CpuA3 implements Cpu {
     }
 
     recebaOperacao(operação: Operação): void {
-        if (this.operacao[1] !== undefined) {
-            this.calculeResultado();
-            this.mostraResultado();
+
+        //if (this.operacao[1] !== undefined) {
+            //this.calculeResultado();
+            //this.mostraResultado();
             // this.numeros[1] = new Decimal(0)
-        }
+        //}
         
         this.operacao[0] = this.operacao[1]
         this.operacao[1] = (operação)
@@ -60,33 +61,38 @@ export default class CpuA3 implements Cpu {
                 this.numeros[0] = this.numeros[0].sqrt();
                 this.mostraResultado();
                 break;
-                case Operação.PERCENTUAL:
-                    if (this.numeros.length > 0){
-                        if (this.numeros.length === 1) {
-                            this.numeros[0] = new Decimal(0)
+            case Operação.PERCENTUAL:
+                if (this.numeros.length > 0){
+                    if (this.numeros.length === 1) {
+                        this.numeros[0] = new Decimal(0)
+                        this.mostraResultado();
+                    }
+                    if (this.numeros.length > 1){
+                        if (this.operacao[0] === Operação.MULTIPLICAÇÃO) {
+                            this.numeros[1] = this.numeros[1].dividedBy(100);
+                            this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                            break
                             this.mostraResultado();
+                            
                         }
-                        if (this.numeros.length > 1){
-                            if (this.operacao[0] === Operação.MULTIPLICAÇÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].times(this.numeros[1]);
-                            }}
-                            if (this.operacao[0] === Operação.SUBTRAÇÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
-                            }
-                            if (this.operacao[0] === Operação.DIVISÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].div(this.numeros[1]);
-                            }
-                            if (this.operacao[0] === Operação.SOMA) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
-                            }
-
-                                
-                            }
-        }
+                        if (this.operacao[0] === Operação.SUBTRAÇÃO) {
+                            this.numeros[1] = this.numeros[1].dividedBy(100);
+                            this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                        }
+                        if (this.operacao[0] === Operação.DIVISÃO) {
+                            this.numeros[1] = this.numeros[1].dividedBy(100);
+                            this.numeros[0] = this.numeros[0];
+                            this.mostraResultado();
+                            break;
+                        }
+                        if (this.operacao[0] === Operação.SOMA) {
+                            this.numeros[1] = this.numeros[1].dividedBy(100);
+                            
+                        }
+                            
+                        }}
+                break;
+    }
     }
 
     recebaControle(controle: Controle): void {
