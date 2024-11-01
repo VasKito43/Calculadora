@@ -14,7 +14,8 @@ const teclado = new TecladoA3(cpu);
 tela.mostre(Digito.ZERO)
 
 
-
+// 2+9raiz = 5
+// 9 raiz mostra 3
 
 
 // // tela.limpe()
@@ -24,28 +25,30 @@ tela.mostre(Digito.ZERO)
 // teclado.digiteDigito(Digito.UM)
 
 // teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
-// teclado.digiteDigito(Digito.QUATRO)
-// teclado.digiteOperacao(Operação.DIVISÃO)
+teclado.digiteDigito(Digito.DOIS)
+teclado.digiteOperacao(Operação.SOMA)
+teclado.digiteDigito(Digito.NOVE)
+teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
+// teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
 // teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.ZERO)
-// teclado.digiteOperacao(Operação.SOMA)
 // teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteDigito(Digito.SETE)
 // teclado.digiteDigito(Digito.SEIS)
 // teclado.digiteDigito(Digito.CINCO)
-teclado.digiteDigito(Digito.UM)
-teclado.digiteDigito(Digito.DOIS)
-teclado.digiteDigito(Digito.TRÊS)
+// teclado.digiteDigito(Digito.UM)
+// teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.TRÊS)
 // teclado.digiteControle(Controle.MEMÓRIA_SOMA)
 // teclado.digiteDigito(Digito.CINCO)
 // teclado.digiteOperacao(Operação.MULTIPLICAÇÃO)
 
-teclado.digiteOperacao(Operação.DIVISÃO)
-teclado.digiteDigito(Digito.ZERO)
+// teclado.digiteOperacao(Operação.DIVISÃO)
+// teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.CINCO)
 // teclado.digiteDigito(Digito.DOIS)
 
@@ -67,20 +70,14 @@ teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.UM)
 
 // teclado.digiteControle(Controle.IGUAL)
-teclado.digiteControle(Controle.IGUAL)
+// teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
-teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteControle(Controle.MEMÓRIA_SOMA)
 
 // teclado.digiteControle(Controle.IGUAL)
-teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
-teclado.digiteDigito(Digito.DOIS)
+// teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
+// teclado.digiteDigito(Digito.DOIS)
 
 // teclado.digiteControle(Controle.DESATIVAÇÃO)
 
-// tela.mostreMemoria()
-// tela.mostreErro()
-
-function f(value: unknown){
-    console.log()
-}
