@@ -1,7 +1,5 @@
 import { Digito, Sinal, Tela } from "./calculadora";
 
-// limitar 8 digitos, borda tela, problema numero flutuante
-
 export default class TelaA3 implements Tela{
    private modelosDigitos = {
       [Digito.ZERO]: [
@@ -146,7 +144,6 @@ export default class TelaA3 implements Tela{
       process.stdout.write('\x1Bc');
       this.display.splice(1, 1);
       this.display.push(this.modelosDigitos[digito].slice())
-      // console.log(this.display)
 
       console.log("==========================================================================================")
       for (let i = 0; i < 5; i++) {
@@ -194,7 +191,6 @@ export default class TelaA3 implements Tela{
             this.display[0][2] = this.display[0][2].slice(0, -5) + "▬▬▬  "
             break
       }
-      // console.log(this.digitos[0][3])
       console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {

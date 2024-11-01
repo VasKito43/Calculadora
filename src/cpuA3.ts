@@ -17,29 +17,26 @@ export default class CpuA3 implements Cpu {
     constructor(tela: Tela) {
         this.definaTela(tela);
     }
-
     
     recebaDigito(digito: Digito): void {
         if (this.erro === false && this.digitos.length < 8){
             if (this.memoriaAtivada === true){
-                this.digitos = []
+                this.limpaDigitos()
                 this.tela?.limpe()
                 this.memoriaAtivada = false
                 if (this.numeros.length === 1){
                     this.numeros = []
                 } else {
                     this.numeros.pop()
-                }
-            }
+                }}
             this.armazeneDigito(digito);
             this.tela?.mostre(digito);
-        }
-    }
+        }}
 
     recebaOperacao(operação: Operação): void {
         if (this.erro === false){
 
-            if (this.operacao[1] !== undefined && operação !== Operação.PERCENTUAL) {
+            if (this.operacao[1] !== undefined && operação !== Operação.PERCENTUAL && this.controles[1] !== Controle.IGUAL) {
                 this.calculeResultado();
                 this.mostraResultado();
                 
@@ -52,11 +49,10 @@ export default class CpuA3 implements Cpu {
                     this.adicionaNumeroOperando()
 
             } else {
-                this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
-                this.separadorDecimal = false;
+                this.adicionaNumeroOperandoSeparadorDecimal()
             }
     
-            this.digitos = [];
+            this.limpaDigitos()
             this.memoriaAtivada = false
             this.controles[1] = undefined
             switch (operação) {
@@ -72,33 +68,28 @@ export default class CpuA3 implements Cpu {
                             this.mostraResultado();
                         }
                         if (this.numeros.length > 1){
-                            if (this.operacao[0] === Operação.MULTIPLICAÇÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].times(this.numeros[1]);
-                                
-                                
-                            }
-                            if (this.operacao[0] === Operação.SUBTRAÇÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[1] = this.numeros[1].times(this.numeros[0])
-                                this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
-                            }
-                            if (this.operacao[0] === Operação.DIVISÃO) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[0] = this.numeros[0].div(this.numeros[1])
-                            }
-                            if (this.operacao[0] === Operação.SOMA) {
-                                this.numeros[1] = this.numeros[1].dividedBy(100);
-                                this.numeros[1] = this.numeros[1].times(this.numeros[0])
-                                this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
-                                
-                            }
-                                
-                            }}
+                            switch (this.operacao[0]){
+                                case Operação.MULTIPLICAÇÃO:
+                                    this.numeros[1] = this.numeros[1].dividedBy(100);
+                                    this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                                    break
+                                case Operação.SUBTRAÇÃO:
+                                    this.numeros[1] = this.numeros[1].dividedBy(100);
+                                    this.numeros[1] = this.numeros[1].times(this.numeros[0])
+                                    this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                                    break
+                                case Operação.DIVISÃO:
+                                    this.numeros[1] = this.numeros[1].dividedBy(100);
+                                    this.numeros[0] = this.numeros[0].div(this.numeros[1])
+                                    break
+                                case Operação.SOMA:
+                                    this.numeros[1] = this.numeros[1].dividedBy(100);
+                                    this.numeros[1] = this.numeros[1].times(this.numeros[0])
+                                    this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
+                                    break
+                            }}}
                     break;
-        }
-        }
-        }
+        }}}
 
     recebaControle(controle: Controle): void {
         if (this.erro === false || controle === Controle.ATIVAÇÃO_LIMPEZA_ERRO){
@@ -113,60 +104,50 @@ export default class CpuA3 implements Cpu {
                     if (this.memoriaAtivada === false){
                         this.calculeResultado();
                     }
-                    // this.calculeResultado();
-    
                     if (this.operacao[1] === undefined && this.numeros.length === 2){
                         this.numeros[0] = this.numeros[1]
                     }
-                    // this.memoriaAtivada = false
                     if (this.numeros.length !== 0){
                         this.mostraResultado();
                     }
                     this.memoriaAtivada = false
-                    // this.controles[1] = undefined
                     break;
                 case Controle.SEPARADOR_DECIMAL:
                     if (!this.separadorDecimal) {
                         this.adicionaNumeroOperando()
                         this.separadorDecimal = true;
-                        this.digitos = [];
+                        this.limpaDigitos()
                         this.tela?.mostreSeparadorDecimal();
                     }
                     break;
                 case Controle.MEMÓRIA_SOMA:
                     if (this.operacao[1] === undefined){
                         if (this.separadorDecimal === true){
-                            this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
-                            this.separadorDecimal = false;
+                            this.adicionaNumeroOperandoSeparadorDecimal()
                         } else{
                             this.adicionaNumeroOperando()
                         }
-                        this.memoria = this.memoria.plus(this.numeros[0])
-                        this.digitos = []
-                        this.memoriaAtivada = true
+                        this.limpaDigitos()
                     }else {
                         this.calculeResultado()
-                        this.memoria = this.memoria.plus(this.numeros[0])
-                        this.memoriaAtivada = true
                     }
+                    this.memoria = this.memoria.plus(this.numeros[0])
+                    this.memoriaAtivada = true
                     this.tela?.mostreMemoria()
                     break
                 case Controle.MEMÓRIA_SUBTRAÇÃO:
                     if (this.operacao[1] === undefined){
                         if (this.separadorDecimal === true){
-                            this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
-                            this.separadorDecimal = false;
+                            this.adicionaNumeroOperandoSeparadorDecimal()
                         } else{
                             this.adicionaNumeroOperando()
                         }
-                        this.memoria = this.memoria.minus(this.numeros[0])
-                        this.digitos = []
-                        this.memoriaAtivada = true
+                        this.limpaDigitos()
                     }else {
                         this.calculeResultado()
-                        this.memoria = this.memoria.minus(this.numeros[0])
-                        this.memoriaAtivada = true
                     }
+                    this.memoria = this.memoria.minus(this.numeros[0])
+                    this.memoriaAtivada = true
                     this.tela?.mostreMemoria()
                     break
                 case Controle.MEMÓRIA_LEITURA_LIMPEZA:
@@ -175,21 +156,17 @@ export default class CpuA3 implements Cpu {
                     } else {
                         this.numeros[1] = this.memoria
                     }
-                    this.digitos = []
-                    // this.memoriaAtivada = true
+                    this.limpaDigitos()
                     if (this.controles[0] === Controle.MEMÓRIA_LEITURA_LIMPEZA && this.controles[1] === Controle.MEMÓRIA_LEITURA_LIMPEZA){
                         this.memoria = new Decimal(0)
                         this.calculeResultado()
                     }
-                    // this.calculeResultado()
                     break
                 case Controle.DESATIVAÇÃO:
                     this.reinicie()
                     this.tela?.limpe()
                     break
-            }
-        }
-        }
+            }}}
 
     reinicie(): void {
         this.digitos = [];
@@ -225,12 +202,10 @@ export default class CpuA3 implements Cpu {
             if (!this.separadorDecimal) {
                 this.adicionaNumeroOperando()
             } else {
-                this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
-                this.separadorDecimal = false;
+                this.adicionaNumeroOperandoSeparadorDecimal()
             }
-            this.digitos = [];
+            this.limpaDigitos()
         }
-    
         
         if (this.numeros.length > 0) {
             if (this.numeros.length < 2 && this.operacao[1] === Operação.DIVISÃO) {
@@ -260,14 +235,8 @@ export default class CpuA3 implements Cpu {
                         } else {
                             this.numeros[0] = this.numeros[0].div(this.numeros[1]);
                         }
-                        
                         break;
-    
-                }
-            }
-        } 
-    }
-    
+    }}}}
 
     private mostraResultado(): void {
         let digitosMap = [
@@ -290,7 +259,6 @@ export default class CpuA3 implements Cpu {
         }
 
         let numeroString = this.numeros[0].toString();
-        
         if (numeroString.replace("-", "").replace(".", "").length > 8) {
             let quantidadeLimite = 8
             if (numeroString.includes("-")){
@@ -310,17 +278,8 @@ export default class CpuA3 implements Cpu {
             } else {
                 this.tela?.mostre(digitosMap[Number(numeroString[i])]);
             }
-        }
-        // console.log(this.numeros)
-        // console.log(this.operacao)
-        // console.log(this.memoria)
-        // console.log(this.memoriaAtivada)
-        // console.log(this.digitos)
-        // console.log(this.controles)
-        // console.log(numeroString.replace("-", "").replace(".", "").slice(0, 8).length)
-        // console.log(this.erro)
-
-    }
+            console.log(this.numeros)
+        }}
 
     private adicionaNumeroOperando() {
         if (this.numeros.length === 2){
@@ -330,17 +289,20 @@ export default class CpuA3 implements Cpu {
             this.numeros.push(new Decimal(0));
         }else{
             this.numeros.push(new Decimal(this.digitos.join('')));
-        }
+        }}
+
+    private adicionaNumeroOperandoSeparadorDecimal(){
+        this.numeros[0] = this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length)));
+        this.separadorDecimal = false;
+    }
+
+    private limpaDigitos(){
+        this.digitos = [];
     }
 
     private ativaErro(){
         this.erro = true;
         this.tela?.mostreErro();
     }
-    
-    
-            
-        
-    
 }
  
