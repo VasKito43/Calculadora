@@ -109,7 +109,7 @@ export default class CpuA3 implements Cpu {
                     if (this.operacao[1] === undefined && this.numeros.length === 2){
                         this.numeros[0] = this.numeros[1]
                     }
-                    if (this.numeros.length !== 0){
+                    if (this.numeros.length !== 0 && this.erro === false){
                         this.mostraResultado();
                     }
                     this.memoriaAtivada = false
@@ -200,9 +200,9 @@ export default class CpuA3 implements Cpu {
         this.digitos.push(digito);
     }
 
-    private calculeResultado() {
+    private calculeResultado() {    
         
-        if (this.digitos.length > 0 && new Decimal(this.digitos.join('')).toNumber() !== 0) {
+        if (this.digitos.length > 0) {
             if (!this.separadorDecimal) {
                 this.adicionaNumeroOperando()
             } else {
@@ -210,7 +210,7 @@ export default class CpuA3 implements Cpu {
             }
             this.limpaDigitos()
         }
-        
+
         if (this.numeros.length > 0) {
             if (this.numeros.length < 2 && this.operacao[1] === Operação.DIVISÃO) {
                 let multiplicador = new Decimal(1).div(this.numeros[0].pow(2))
@@ -234,7 +234,8 @@ export default class CpuA3 implements Cpu {
         
                     case Operação.DIVISÃO:
 
-                        if(this.numeros[1] === new Decimal(0)) {
+                        if(this.numeros[1].equals(new Decimal(0))) {
+                            
                             this.ativaErro()
                             this.numeros[0] = new Decimal(0)
                             this.numeros[1] = new Decimal(0)
@@ -284,7 +285,6 @@ export default class CpuA3 implements Cpu {
             } else {
                 this.tela?.mostre(digitosMap[Number(numeroString[i])]);
             }
-            console.log(this.numeros)
         }}
 
     private adicionaNumeroOperando() {

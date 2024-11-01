@@ -69,11 +69,13 @@ teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteControle(Controle.IGUAL)
 teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.SEPARADOR_DECIMAL)
-// teclado.digiteDigito(Digito.DOIS)
+teclado.digiteDigito(Digito.DOIS)
 // teclado.digiteControle(Controle.MEMÓRIA_SOMA)
 
 // teclado.digiteControle(Controle.IGUAL)
-// teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
+teclado.digiteControle(Controle.ATIVAÇÃO_LIMPEZA_ERRO)
+teclado.digiteDigito(Digito.DOIS)
+
 // teclado.digiteControle(Controle.DESATIVAÇÃO)
 
 // tela.mostreMemoria()
