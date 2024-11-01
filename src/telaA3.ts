@@ -139,7 +139,9 @@ export default class TelaA3 implements Tela{
       ]
      
    ]
-   private copiaDisplay: String[][]= this.display.slice()
+   private copiaDisplay: String[][] = this.display.slice()
+   private memoriaAtivada: boolean = false
+   private erroAtivado: boolean = false
     mostre(digito: Digito): void {
       process.stdout.write('\x1Bc');
       this.display.splice(1, 1);
@@ -205,8 +207,17 @@ export default class TelaA3 implements Tela{
 
     }
     mostreMemoria(): void {
-      process.stdout.write('\x1Bc');
-      this.display[0][1] = this.display[0][1].slice(0, -4) + "M   "
+       process.stdout.write('\x1Bc');
+      switch (this.memoriaAtivada){
+         case false:
+            this.display[0][1] = this.display[0][1].slice(0, -4) + "M   "
+            this.memoriaAtivada = true
+            break
+         case true:
+            this.display[0][1] = this.display[0][1].slice(0, -4) + "    "
+            this.memoriaAtivada = false
+            break
+      }
       console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {
@@ -222,7 +233,16 @@ export default class TelaA3 implements Tela{
     }
     mostreErro(): void {
       process.stdout.write('\x1Bc');
-      this.display[0][3] = this.display[0][3].slice(0, -4) + "E   "
+      switch (this.erroAtivado){
+         case false:
+            this.display[0][3] = this.display[0][3].slice(0, -4) + "E   "
+            this.erroAtivado = true
+            break
+         case true:
+            this.display[0][3] = this.display[0][3].slice(0, -4) + "    "
+            this.erroAtivado = false
+            break
+      }
       console.log("==========================================================================================")
 
       for (let i = 0; i < 5; i++) {

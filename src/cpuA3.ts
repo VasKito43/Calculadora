@@ -13,6 +13,7 @@ export default class CpuA3 implements Cpu {
     private separadorDecimal: boolean = false;
     private memoriaAtivada: boolean = false;
     private erro: boolean = false
+    private memoriaTelaAtivada: boolean = false
 
     constructor(tela: Tela) {
         this.definaTela(tela);
@@ -99,6 +100,7 @@ export default class CpuA3 implements Cpu {
             switch (controle) {
                 case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
                     this.reinicie()
+                    this.tela?.mostreErro()
                     break;
                 case Controle.IGUAL:
                     if (this.memoriaAtivada === false){
@@ -133,7 +135,7 @@ export default class CpuA3 implements Cpu {
                     }
                     this.memoria = this.memoria.plus(this.numeros[0])
                     this.memoriaAtivada = true
-                    this.tela?.mostreMemoria()
+                    this.AtivadorMemoriaTela();
                     break
                 case Controle.MEMÓRIA_SUBTRAÇÃO:
                     if (this.operacao[1] === undefined){
@@ -148,7 +150,7 @@ export default class CpuA3 implements Cpu {
                     }
                     this.memoria = this.memoria.minus(this.numeros[0])
                     this.memoriaAtivada = true
-                    this.tela?.mostreMemoria()
+                    this.AtivadorMemoriaTela()
                     break
                 case Controle.MEMÓRIA_LEITURA_LIMPEZA:
                     if (this.numeros.length === 0){
@@ -159,6 +161,7 @@ export default class CpuA3 implements Cpu {
                     this.limpaDigitos()
                     if (this.controles[0] === Controle.MEMÓRIA_LEITURA_LIMPEZA && this.controles[1] === Controle.MEMÓRIA_LEITURA_LIMPEZA){
                         this.memoria = new Decimal(0)
+                        this.desativadorMemoriaTela()
                         this.calculeResultado()
                     }
                     break
@@ -177,6 +180,7 @@ export default class CpuA3 implements Cpu {
         this.separadorDecimal = false;
         this.memoriaAtivada = false;
         this.erro = false;
+        this.desativadorMemoriaTela()
         this.tela?.limpe()
         this.tela?.mostre(Digito.ZERO)
     }
@@ -230,8 +234,10 @@ export default class CpuA3 implements Cpu {
         
                     case Operação.DIVISÃO:
 
-                        if(this.numeros[1].equals(0)) {
-                            this.ativaErro
+                        if(this.numeros[1] === new Decimal(0)) {
+                            this.ativaErro()
+                            this.numeros[0] = new Decimal(0)
+                            this.numeros[1] = new Decimal(0)
                         } else {
                             this.numeros[0] = this.numeros[0].div(this.numeros[1]);
                         }
@@ -303,6 +309,17 @@ export default class CpuA3 implements Cpu {
     private ativaErro(){
         this.erro = true;
         this.tela?.mostreErro();
+    }
+    private AtivadorMemoriaTela(){
+        if (this.memoriaTelaAtivada === false){
+            this.tela?.mostreMemoria()
+            this.memoriaTelaAtivada = true
+        }}
+    private desativadorMemoriaTela(){
+        if (this.memoriaTelaAtivada === true){
+            this.tela?.mostreMemoria()
+            this.memoriaTelaAtivada = false
+        }
     }
 }
  
