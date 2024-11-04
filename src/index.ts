@@ -17,6 +17,9 @@ tela.mostre(Digito.ZERO)
 // 2+9raiz = 5
 // 9 raiz mostra 3
 
+// 2+9 = (11)
+// 3 = (12)
+
 
 // // tela.limpe()
 // tela.mostre(Digito.ZERO)
@@ -28,12 +31,12 @@ tela.mostre(Digito.ZERO)
 teclado.digiteDigito(Digito.DOIS)
 teclado.digiteOperacao(Operação.SOMA)
 teclado.digiteDigito(Digito.NOVE)
-teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
 // teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
+// teclado.digiteOperacao(Operação.RAIZ_QUADRADA)
+teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteControle(Controle.IGUAL)
-// teclado.digiteControle(Controle.IGUAL)
-// teclado.digiteControle(Controle.IGUAL)
-// teclado.digiteDigito(Digito.TRÊS)
+teclado.digiteDigito(Digito.TRÊS)
+teclado.digiteControle(Controle.IGUAL)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.ZERO)
 // teclado.digiteDigito(Digito.DOIS)
