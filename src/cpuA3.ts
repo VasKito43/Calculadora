@@ -37,7 +37,7 @@ export default class CpuA3 implements Cpu {
     recebaOperacao(operação: Operação): void {
         if (this.erro === false){
 
-            if (this.operacao[1] !== undefined && operação !== Operação.PERCENTUAL && this.controles[1] !== Controle.IGUAL) {
+            if (this.operacao[1] !== undefined && operação !== Operação.PERCENTUAL && this.controles[1] !== Controle.IGUAL && operação !== Operação.RAIZ_QUADRADA) {
                 this.calculeResultado();
                 this.mostraResultado();
                 
