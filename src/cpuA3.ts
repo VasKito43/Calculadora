@@ -14,6 +14,19 @@ export default class CpuA3 implements Cpu {
     private memoriaAtivada: boolean = false;
     private erro: boolean = false
     private memoriaTelaAtivada: boolean = false
+    private raizQuadradaAtivada: boolean = false // apenas quando é calculado o segundo operando
+    private digitosMap = [
+        Digito.ZERO,
+        Digito.UM,
+        Digito.DOIS,
+        Digito.TRÊS,
+        Digito.QUATRO,
+        Digito.CINCO,
+        Digito.SEIS,
+        Digito.SETE,
+        Digito.OITO,
+        Digito.NOVE
+    ];
 
     constructor(tela: Tela) {
         this.definaTela(tela);
@@ -53,44 +66,53 @@ export default class CpuA3 implements Cpu {
                 this.adicionaNumeroOperandoSeparadorDecimal()
             }
     
-            this.limpaDigitos()
             this.memoriaAtivada = false
             this.controles[1] = undefined
             switch (operação) {
                 case Operação.RAIZ_QUADRADA:
                     this.tela?.limpe();
-                    this.numeros[0] = this.numeros[0].sqrt();
+                    if (this.numeros[1] !== undefined && !this.numeros[1].equals(new Decimal(0))){
+                        this.numeros[1] = this.numeros[1].sqrt();
+                        this.raizQuadradaAtivada = true
+                    }else{
+                        this.numeros[0] = this.numeros[0].sqrt();
+                    }
+                    this.operacao[1] = this.operacao[0]
+                    this.digitos = []
                     this.mostraResultado();
+                    this.raizQuadradaAtivada = false
                     break;
-                case Operação.PERCENTUAL:
-                    if (this.numeros.length > 0){
-                        if (this.numeros.length === 1) {
-                            this.numeros[0] = new Decimal(0)
-                            this.mostraResultado();
-                        }
-                        if (this.numeros.length > 1){
-                            switch (this.operacao[0]){
-                                case Operação.MULTIPLICAÇÃO:
-                                    this.numeros[1] = this.numeros[1].dividedBy(100);
-                                    this.numeros[0] = this.numeros[0].times(this.numeros[1]);
-                                    break
-                                case Operação.SUBTRAÇÃO:
-                                    this.numeros[1] = this.numeros[1].dividedBy(100);
-                                    this.numeros[1] = this.numeros[1].times(this.numeros[0])
-                                    this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
-                                    break
-                                case Operação.DIVISÃO:
-                                    this.numeros[1] = this.numeros[1].dividedBy(100);
-                                    this.numeros[0] = this.numeros[0].div(this.numeros[1])
-                                    break
-                                case Operação.SOMA:
-                                    this.numeros[1] = this.numeros[1].dividedBy(100);
-                                    this.numeros[1] = this.numeros[1].times(this.numeros[0])
-                                    this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
-                                    break
-                            }}}
-                    break;
-        }}}
+                    case Operação.PERCENTUAL:
+                        if (this.numeros.length > 0){
+                            if (this.numeros.length === 1) {
+                                this.numeros[0] = new Decimal(0)
+                                this.mostraResultado();
+                            }
+                            if (this.numeros.length > 1){
+                                switch (this.operacao[0]){
+                                    case Operação.MULTIPLICAÇÃO:
+                                        this.numeros[1] = this.numeros[1].dividedBy(100);
+                                        this.numeros[0] = this.numeros[0].times(this.numeros[1]);
+                                        break
+                                        case Operação.SUBTRAÇÃO:
+                                            this.numeros[1] = this.numeros[1].dividedBy(100);
+                                            this.numeros[1] = this.numeros[1].times(this.numeros[0])
+                                            this.numeros[0] = this.numeros[0].minus(this.numeros[1]);
+                                            break
+                                            case Operação.DIVISÃO:
+                                                this.numeros[1] = this.numeros[1].dividedBy(100);
+                                                this.numeros[0] = this.numeros[0].div(this.numeros[1])
+                                                break
+                                                case Operação.SOMA:
+                                                    this.numeros[1] = this.numeros[1].dividedBy(100);
+                                                    this.numeros[1] = this.numeros[1].times(this.numeros[0])
+                                                    this.numeros[0] = this.numeros[0].plus(this.numeros[1]);
+                                                    break
+                                                }}}
+                                                break;
+                                            }
+            this.limpaDigitos()
+    }}
 
     recebaControle(controle: Controle): void {
         if (this.erro === false || controle === Controle.ATIVAÇÃO_LIMPEZA_ERRO){
@@ -246,26 +268,18 @@ export default class CpuA3 implements Cpu {
     }}}}
 
     private mostraResultado(): void {
-        let digitosMap = [
-            Digito.ZERO,
-            Digito.UM,
-            Digito.DOIS,
-            Digito.TRÊS,
-            Digito.QUATRO,
-            Digito.CINCO,
-            Digito.SEIS,
-            Digito.SETE,
-            Digito.OITO,
-            Digito.NOVE
-        ];
         this.tela?.limpe();
+        let numeroString = ''
         if (this.numeros[0].isNegative()) {
             this.tela?.mostreSinal(Sinal.NEGATIVO);
         } else{
             this.tela?.mostreSinal(Sinal.POSITIVO);
         }
-
-        let numeroString = this.numeros[0].toString();
+        if (this.raizQuadradaAtivada === true){
+            numeroString = this.numeros[1].toString();
+        }else{
+            numeroString = this.numeros[0].toString();
+        }
         if (numeroString.replace("-", "").replace(".", "").length > 8) {
             let quantidadeLimite = 8
             if (numeroString.includes("-")){
@@ -283,7 +297,7 @@ export default class CpuA3 implements Cpu {
             if (numeroString[i] === ".") {
                 this.tela?.mostreSeparadorDecimal();
             } else {
-                this.tela?.mostre(digitosMap[Number(numeroString[i])]);
+                this.tela?.mostre(this.digitosMap[Number(numeroString[i])]);
             }
         }}
 
