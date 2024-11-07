@@ -202,6 +202,7 @@ export default class CpuA3 implements Cpu {
         this.separadorDecimal = false;
         this.memoriaAtivada = false;
         this.erro = false;
+        this.raizQuadradaAtivada = false
         this.desativadorMemoriaTela()
         this.tela?.limpe()
         this.tela?.mostre(Digito.ZERO)
