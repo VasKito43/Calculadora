@@ -1,6 +1,4 @@
-import { flag } from "arg";
 import { Controle, Cpu, Digito, Operação, Sinal, Teclado, Tela } from "./calculadora";
-import TelaA3 from "./telaA3";
 import Decimal from 'decimal.js';
 
 export enum TipoMemoria {
@@ -87,17 +85,26 @@ export default class CpuA3 implements Cpu {
                             switch (this.operacao){
                                 case Operação.MULTIPLICAÇÃO:
                                     this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                                    this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                                    this.ativarMostrarSegundoNumero();
+                                    this.mostraResultado();
+                                    this.desativarMostrarSegundoNumero();
                                     break
                                     case Operação.SUBTRAÇÃO:
                                         this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
                                         this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                                        this.recebaControle(Controle.IGUAL);
                                         break
                                         case Operação.DIVISÃO:
                                             this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                                            this.primeiroNumeroRecebe(this.numeros[0].div(this.numeros[1]));
+                                            // this.recebaControle(Controle.IGUAL);
+                                            this.mostraResultado()
                                             break
                                             case Operação.SOMA:
                                                 this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
                                                 this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                                                this.recebaControle(Controle.IGUAL);
                                                 break
                                             }}}
                                             break;
