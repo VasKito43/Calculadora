@@ -37,87 +37,32 @@ export default class CpuA3 implements Cpu {
     
     recebaDigito(digito: Digito): void {
         if (!this.erroAtivado() && this.digitos.length < 8){
-            if (this.memoriaAtivada){
-                this.limpaDigitos();
-                this.limpaTela();
-                this.desativaMemoria();
-                if (this.apenasUmNumero()){
-                    this.limpaNumeros();
-                } else {
-                    this.retiraUltimoNumero();
-                }}
+            this.verificaMemoriaRecebaNumero();
             this.armazeneDigito(digito);
             this.mostraDigito(digito);
-
         }}
 
     recebaOperacao(operação: Operação): void {
         if (!this.erroAtivado()){
-            if (!this.separadorDecimalAtivado()) {
-                    this.adicionaNumeroOperando();
-            } else {
-                this.adicionaNumeroOperandoSeparadorDecimal();
-            }
-            
+            this.adicionaNumero();
             this.desativaMemoria();
             this.controle = undefined;
 
             switch (operação) {
                 case Operação.RAIZ_QUADRADA:
                     this.limpaTela();
-                    if (!this.apenasUmNumero() && !this.segundoNumeroIgualZero()){
-                        this.segundoNumeroRecebe(this.numeros[1].sqrt());
-                        this.ativarMostrarSegundoNumero();
-                    }else{
-                        this.primeiroNumeroRecebe(this.numeros[0].sqrt());
-                    }
-                    this.limpaDigitos();
-                    this.mostraResultado();
-                    this.desativarMostrarSegundoNumero();
+                    this.calculeRaiz();
                     break;
                 case Operação.PERCENTUAL:
-                    if (this.existeNumero()){
-                        if (this.apenasUmNumero()) {
-                            this.primeiroNumeroRecebe(this.zero());
-                            this.mostraResultado();
-                        }
-                        if (this.numeros.length > 1){
-                            switch (this.operacao){
-                                case Operação.MULTIPLICAÇÃO:
-                                    this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                    this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
-                                    this.ativarMostrarSegundoNumero();
-                                    this.mostraResultado();
-                                    this.desativarMostrarSegundoNumero();
-                                    break
-                                    case Operação.SUBTRAÇÃO:
-                                        this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                        this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
-                                        this.recebaControle(Controle.IGUAL);
-                                        break
-                                        case Operação.DIVISÃO:
-                                            this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                            this.primeiroNumeroRecebe(this.numeros[0].div(this.numeros[1]));
-                                            // this.recebaControle(Controle.IGUAL);
-                                            this.mostraResultado()
-                                            break
-                                            case Operação.SOMA:
-                                                this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                                this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
-                                                this.recebaControle(Controle.IGUAL);
-                                                break
-                                            }}}
-                                            break;
+                    this.calculePorcentual();
+                    break;
                 default:
-                    if (this.operacao !== undefined){
-                        this.calculeResultado();
-                        this.mostraResultado();
-                    }
+                    this.OperaçãoDigitadaExecuta();
                     this.operacao = operação;
                     break;
                                             }
 
-            this.limpaDigitos()
+            this.limpaDigitos();
     }}
 
     recebaControle(controle: Controle): void {
@@ -125,56 +70,39 @@ export default class CpuA3 implements Cpu {
 
             switch (controle) {
                 case Controle.ATIVAÇÃO_LIMPEZA_ERRO:
-                    this.reinicie()
-                    this.tela?.mostreErro()
+                    this.reinicie();
+                    this.tela?.mostreErro();
                     break;
                 case Controle.IGUAL:
-                    if (!this.memoriaAtivada){
-                        this.calculeResultado();
-                    }
-                    if (this.operacao === undefined && this.numeros.length === 2){
-                        this.primeiroNumeroRecebe(this.numeros[1])
-                    }
-                    if (this.numeros.length !== 0 && !this.erroAtivado()){
-                        this.mostraResultado();
-                    }
-                    this.desativaMemoria();
+                    this.executaIgual();
                     break;
                 case Controle.SEPARADOR_DECIMAL:
-                    if (!this.separadorDecimal) {
-                        this.adicionaNumeroOperando()
-                        this.separadorDecimal = true;
-                        this.ativarMostrarSegundoNumero();
-                        this.limpaDigitos()
-                        this.mostraResultado()
-                        this.tela?.mostreSeparadorDecimal();
-                        this.desativarMostrarSegundoNumero();
-                    }
+                    this.executaSeparadorDecimal();
                     break;
                 case Controle.MEMÓRIA_SOMA:
-                    this.executaMemoria(TipoMemoria.MAIS)
+                    this.executaMemoria(TipoMemoria.MAIS);
                     break
                 case Controle.MEMÓRIA_SUBTRAÇÃO:
-                    this.executaMemoria(TipoMemoria.MENOS)
+                    this.executaMemoria(TipoMemoria.MENOS);
                     break
                 case Controle.MEMÓRIA_LEITURA_LIMPEZA:
                     if (this.numeros.length === 0){
-                        this.primeiroNumeroRecebe(this.memoria)
+                        this.primeiroNumeroRecebe(this.memoria);
                     } else {
                         this.segundoNumeroRecebe(this.memoria);
                     }
-                    this.limpaDigitos()
-                    if (this.controle === Controle.MEMÓRIA_LEITURA_LIMPEZA && controle === Controle.MEMÓRIA_LEITURA_LIMPEZA){
-                        this.memoria = this.zero()
-                        this.desativadorMemoriaTela()
+                    this.limpaDigitos();
+                    if (this.memoriaLeituraLimpezaDuasVezesSeguidas(controle)){
+                        this.memoria = this.zero();
+                        this.desativadorMemoriaTela();
                     }
-                    break
+                    break;
                 case Controle.DESATIVAÇÃO:
-                    this.reinicie()
+                    this.reinicie();
                     this.limpaTela();
-                    break
+                    break;
             }
-            this.controle = controle
+            this.controle = controle;
         }}
 
     reinicie(): void {
@@ -187,9 +115,9 @@ export default class CpuA3 implements Cpu {
         this.desativaMemoria();
         this.erro = false;
         this.desativarMostrarSegundoNumero();
-        this.desativadorMemoriaTela()
+        this.desativadorMemoriaTela();
         this.limpaTela();
-        this.tela?.mostre(Digito.ZERO)
+        this.tela?.mostre(Digito.ZERO);
     }
 
     definaTela(tela: Tela | undefined): void {
@@ -209,17 +137,13 @@ export default class CpuA3 implements Cpu {
 
     private calculeResultado() {    
         if (this.digitos.length > 0) {
-            if (!this.separadorDecimal) {
-                this.adicionaNumeroOperando()
-            } else {
-                this.adicionaNumeroOperandoSeparadorDecimal()
-            }
-            this.limpaDigitos()
+            this.adicionaNumero();
+            this.limpaDigitos();
         }
 
         if (this.existeNumero()) {
             if (this.apenasUmNumero() && this.operacao === Operação.DIVISÃO) {
-                let multiplicador = new Decimal(1).div(this.numeros[0].pow(2))
+                let multiplicador = new Decimal(1).div(this.numeros[0].pow(2));
                 this.segundoNumeroRecebe(this.numeros[0]);
                 this.primeiroNumeroRecebe(this.numeros[0].times(multiplicador));
             } else if (this.apenasUmNumero()) {
@@ -240,7 +164,7 @@ export default class CpuA3 implements Cpu {
         
                     case Operação.DIVISÃO:
                         if(this.segundoNumeroIgualZero()) {
-                            this.ativaErro()
+                            this.ativaErro();
                             this.primeiroNumeroRecebe(this.zero());
                             this.segundoNumeroRecebe(this.zero());
                         } else {
@@ -249,39 +173,85 @@ export default class CpuA3 implements Cpu {
                         break;
     }}}}
 
+    private calculeRaiz(){
+        if (!this.apenasUmNumero() && !this.segundoNumeroIgualZero()){
+            this.segundoNumeroRecebe(this.numeros[1].sqrt());
+            this.ativarMostrarSegundoNumero();
+        }else{
+            this.primeiroNumeroRecebe(this.numeros[0].sqrt());
+        }
+        this.limpaDigitos();
+        this.mostraResultado();
+        this.desativarMostrarSegundoNumero();
+    }
+
+    private calculePorcentual(){
+        if (this.existeNumero()){
+            if (this.apenasUmNumero()) {
+                this.primeiroNumeroRecebe(this.zero());
+                this.mostraResultado();
+            }
+            if (this.numeros.length > 1){
+                switch (this.operacao){
+                    case Operação.MULTIPLICAÇÃO:
+                        this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                        this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                        this.ativarMostrarSegundoNumero();
+                        this.mostraResultado();
+                        this.desativarMostrarSegundoNumero();
+                        break;
+                        case Operação.SUBTRAÇÃO:
+                            this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                            this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                            this.recebaControle(Controle.IGUAL);
+                            break;
+                            case Operação.DIVISÃO:
+                                this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                                this.primeiroNumeroRecebe(this.numeros[0].div(this.numeros[1]));
+                                this.mostraResultado();
+                                break;
+                                case Operação.SOMA:
+                                    this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
+                                    this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
+                                    this.recebaControle(Controle.IGUAL);
+                                    break;
+    }}}}
+
     private mostraResultado(): void {
         this.limpaTela();
-        let numeroString = ''
+        let numeroString = '';
         if (this.numeros[0].isNegative()) {
             this.tela?.mostreSinal(Sinal.NEGATIVO);
         } else{
             this.tela?.mostreSinal(Sinal.POSITIVO);
         }
         if (this.mostrarSegundoNumero){
+            console.log()
             numeroString = this.numeros[1].toString();
         }else{
             numeroString = this.numeros[0].toString();
         }
         if (numeroString.replace("-", "").replace(".", "").length > 8) {
-            let quantidadeLimite = 8
+            let quantidadeLimite = 8;
             if (numeroString.includes("-")){
-                quantidadeLimite += 1
+                quantidadeLimite += 1;
             }
             if(numeroString.replace("-", "").slice(0,8).includes(".")){
-                quantidadeLimite += 1
+                quantidadeLimite += 1;
             }
             numeroString = numeroString.slice(0, quantidadeLimite)
-            this.ativaErro()
+            this.ativaErro();
         } 
 
         for (let i = 0; i < numeroString.length; i++) {
-        
             if (numeroString[i] === ".") {
                 this.tela?.mostreSeparadorDecimal();
             } else {
                 this.tela?.mostre(this.digitosMapa[Number(numeroString[i])]);
             }
-        } console.log(this.numeros)}
+        } 
+        // console.log(this.numeros)
+    }
 
     private adicionaNumeroOperando() {
         if (this.numeros.length === 2){
@@ -300,24 +270,46 @@ export default class CpuA3 implements Cpu {
 
     private executaMemoria(tipo: TipoMemoria){
         if (this.operacao === undefined){
-            if (this.separadorDecimalAtivado()){
-                this.adicionaNumeroOperandoSeparadorDecimal()
-            } else{
-                this.adicionaNumeroOperando()
-            }
-            this.limpaDigitos()
+            this.adicionaNumero();
+            this.limpaDigitos();
         }else {
-            this.calculeResultado()
+            this.calculeResultado();
         }
         if (tipo === TipoMemoria.MAIS){
-            this.memoria = this.memoria.plus(this.numeros[0])
+            this.memoria = this.memoria.plus(this.numeros[0]);
         }else if(tipo === TipoMemoria.MENOS){
-            this.memoria = this.memoria.minus(this.numeros[0])
+            this.memoria = this.memoria.minus(this.numeros[0]);
         }
         this.ativaMemoria();
         this.AtivadorMemoriaTela();
         this.mostraResultado();
     }
+
+    private executaIgual(){
+        if (!this.memoriaAtivada){
+            this.calculeResultado();
+        }
+        if (this.operacao === undefined && this.numeros.length === 2){
+            this.primeiroNumeroRecebe(this.numeros[1]);
+        }
+        if (this.numeros.length !== 0 && !this.erroAtivado()){
+            this.mostraResultado();
+        }
+        this.desativaMemoria();
+    }
+
+    private executaSeparadorDecimal(){
+        if (!this.separadorDecimal) {
+            this.adicionaNumeroOperando();
+            this.separadorDecimal = true;
+            if (!this.apenasUmNumero()){
+                this.ativarMostrarSegundoNumero();
+            }
+            this.limpaDigitos();
+            this.mostraResultado();
+            this.tela?.mostreSeparadorDecimal();
+            this.desativarMostrarSegundoNumero();
+    }}
 
     private limpaDigitos(){
         this.digitos = [];
@@ -329,15 +321,14 @@ export default class CpuA3 implements Cpu {
     }
     private AtivadorMemoriaTela(){
         if (this.memoriaTelaAtivada === false){
-            this.tela?.mostreMemoria()
-            this.memoriaTelaAtivada = true
+            this.tela?.mostreMemoria();
+            this.memoriaTelaAtivada = true;
         }}
     private desativadorMemoriaTela(){
         if (this.memoriaTelaAtivada === true){
             this.tela?.mostreMemoria();
             this.memoriaTelaAtivada = false;
-        }
-    }
+    }}
     private limpaTela(){
         this.tela?.limpe();
     }
@@ -369,22 +360,46 @@ export default class CpuA3 implements Cpu {
         return this.numeros[1].equals(this.zero());
     }
     private ativarMostrarSegundoNumero(){
-        this.mostrarSegundoNumero = true
+        this.mostrarSegundoNumero = true;
     }
     private desativarMostrarSegundoNumero(){
-        this.mostrarSegundoNumero = false
+        this.mostrarSegundoNumero = false;
     }
     private existeNumero(){
-        return this.numeros.length > 0
+        return this.numeros.length > 0;
     }
     private primeiroNumeroRecebe(numero: Decimal){
-        this.numeros[0] = numero
+        this.numeros[0] = numero;
     }
     private segundoNumeroRecebe(numero: Decimal){
-        this.numeros[1] = numero
+        this.numeros[1] = numero;
     }
     private zero(){
-        return new Decimal(0)
+        return new Decimal(0);
+    }
+    private verificaMemoriaRecebaNumero(){
+        if (this.memoriaAtivada){
+            this.limpaDigitos();
+            this.limpaTela();
+            this.desativaMemoria();
+            if (this.apenasUmNumero()){
+                this.limpaNumeros();
+            } else {
+                this.retiraUltimoNumero();
+    }}}
+    private adicionaNumero(){
+        if (!this.separadorDecimalAtivado()) {
+            this.adicionaNumeroOperando();
+        } else {
+            this.adicionaNumeroOperandoSeparadorDecimal();
+    }}
+    private OperaçãoDigitadaExecuta(){
+        if (this.operacao !== undefined){
+            this.calculeResultado();
+            this.mostraResultado();
+    }}
+    private memoriaLeituraLimpezaDuasVezesSeguidas(controle: Controle){
+        return this.controle === Controle.MEMÓRIA_LEITURA_LIMPEZA && controle === Controle.MEMÓRIA_LEITURA_LIMPEZA;
     }
 }
  
