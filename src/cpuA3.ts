@@ -87,21 +87,17 @@ export default class CpuA3 implements Cpu {
                             switch (this.operacao){
                                 case Operação.MULTIPLICAÇÃO:
                                     this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                    this.primeiroNumeroRecebe(this.numeros[0].times(this.numeros[1]));
                                     break
                                     case Operação.SUBTRAÇÃO:
                                         this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
                                         this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
-                                        this.primeiroNumeroRecebe(this.numeros[0].minus(this.numeros[1]));
                                         break
                                         case Operação.DIVISÃO:
                                             this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
-                                            this.primeiroNumeroRecebe(this.numeros[0].div(this.numeros[1]));
                                             break
                                             case Operação.SOMA:
                                                 this.segundoNumeroRecebe(this.numeros[1].dividedBy(100));
                                                 this.segundoNumeroRecebe(this.numeros[1].times(this.numeros[0]));
-                                                this.primeiroNumeroRecebe(this.numeros[0].plus(this.numeros[1]));
                                                 break
                                             }}}
                                             break;
