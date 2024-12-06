@@ -223,7 +223,7 @@ export default class CpuA3 implements Cpu {
         } else{
             this.tela?.mostreSinal(Sinal.POSITIVO);
         }
-        if (this.mostrarSegundoNumero){
+        if (this.mostrarSegundoNumero && this.numeros[1] !== undefined){
             numeroString = this.numeros[1].toString();
         }else{
             numeroString = this.numeros[0].toString();

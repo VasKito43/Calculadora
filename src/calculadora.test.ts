@@ -201,6 +201,106 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
+    test("Testar 4.56+1.23", ()=>{ //teste 3
+        cpu.reinicie();
+        tela.limpe();
+
+        [Digito.QUATRO].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.CINCO, Digito.SEIS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaOperacao(Operação.SOMA);
+        [Digito.UM].forEach((element) => {
+            cpu.recebaDigito(element);
+        });        
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.DOIS, Digito.TRÊS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });  
+        cpu.recebaControle(Controle.IGUAL);
+        expect(tela.digitos).toBe("5.79")
+        expect(tela.sinal).toBe(Sinal.POSITIVO)
+        expect(tela.memoria).toBeFalsy()
+        expect(tela.error).toBeFalsy()
+    })
+    test("Testar 4.56 x 1.23", ()=>{ //teste 3
+        cpu.reinicie();
+        tela.limpe();
+
+        [Digito.QUATRO].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.CINCO, Digito.SEIS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaOperacao(Operação.MULTIPLICAÇÃO);
+        [Digito.UM].forEach((element) => {
+            cpu.recebaDigito(element);
+        });        
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.DOIS, Digito.TRÊS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });  
+        cpu.recebaControle(Controle.IGUAL);
+        expect(tela.digitos).toBe("5.6088")
+        expect(tela.sinal).toBe(Sinal.POSITIVO)
+        expect(tela.memoria).toBeFalsy()
+        expect(tela.error).toBeFalsy()
+    })
+    test("Testar 4.56-1.23", ()=>{ //teste 3
+        cpu.reinicie();
+        tela.limpe();
+
+        [Digito.QUATRO].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.CINCO, Digito.SEIS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaOperacao(Operação.SUBTRAÇÃO);
+        [Digito.UM].forEach((element) => {
+            cpu.recebaDigito(element);
+        });        
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.DOIS, Digito.TRÊS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });  
+        cpu.recebaControle(Controle.IGUAL);
+        expect(tela.digitos).toBe("3.33")
+        expect(tela.sinal).toBe(Sinal.POSITIVO)
+        expect(tela.memoria).toBeFalsy()
+        expect(tela.error).toBeFalsy()
+    })
+    test("Testar 4.56/1.2", ()=>{ //teste 3
+        cpu.reinicie();
+        tela.limpe();
+
+        [Digito.QUATRO].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.CINCO, Digito.SEIS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });
+        cpu.recebaOperacao(Operação.DIVISÃO);
+        [Digito.UM].forEach((element) => {
+            cpu.recebaDigito(element);
+        });        
+        cpu.recebaControle(Controle.SEPARADOR_DECIMAL);
+        [Digito.DOIS].forEach((element) => {
+            cpu.recebaDigito(element);
+        });  
+        cpu.recebaControle(Controle.IGUAL);
+        expect(tela.digitos).toBe("3.8")
+        expect(tela.sinal).toBe(Sinal.POSITIVO)
+        expect(tela.memoria).toBeFalsy()
+        expect(tela.error).toBeFalsy()
+    })
     test("Testar 100+10%", ()=>{ //teste 12
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
@@ -396,4 +496,5 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
+    
 })

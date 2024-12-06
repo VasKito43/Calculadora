@@ -30,6 +30,7 @@ export default class TelaX0Teste implements Tela {
   }
   limpe(): void {
     this.digitos = "";
+    
     if (this.debug) console.log("Tela::limpe()");
   }
 }
