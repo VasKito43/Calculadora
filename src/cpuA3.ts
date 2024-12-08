@@ -133,9 +133,11 @@ export default class CpuA3 implements Cpu {
     }
 
     private calculeResultado() {    
+        
         if (this.digitos.length > 0) {
             this.adicionaNumero()
             this.limpaDigitos();
+            
         }
 
         if (this.existeNumero()) {
@@ -249,7 +251,6 @@ export default class CpuA3 implements Cpu {
                 this.tela?.mostre(this.digitosMapa[Number(numeroString[i])]);
             }
         } 
-        console.log(numeroString)
     }
 
     private adicionaNumeroOperando() {
@@ -263,7 +264,12 @@ export default class CpuA3 implements Cpu {
         }}
 
     private adicionaNumeroOperandoSeparadorDecimal(){
-        this.primeiroNumeroRecebe(this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length))));
+        if (this.numeros[1] !== undefined){
+            this.segundoNumeroRecebe(this.numeros[1].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length))));
+            
+        } else{
+            this.primeiroNumeroRecebe(this.numeros[0].plus(new Decimal(this.digitos.join('')).dividedBy(Decimal.pow(10, this.digitos.length))));
+        }
         this.separadorDecimal = false;
     }
 
