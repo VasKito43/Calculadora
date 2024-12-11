@@ -3,11 +3,12 @@ import CpuA3 from "./cpuA3"
 import TelaX0Teste from "./telaX0Teste"
 
 
-describe("Testando minha calculadora", ()=> { //teste 1
+describe("Testando minha calculadora", ()=> { 
     let tela: TelaX0Teste = new TelaX0Teste
     let cpu: CpuA3 = new CpuA3(tela)
     cpu.definaTela(tela)
 
+    //Teste Bruno
     test("Testar 123+456", ()=>{
         cpu.reinicie();
         tela.limpe();
@@ -25,7 +26,8 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.error).toBeFalsy()
     })
 
-    test("Testar 12+34+56", ()=>{ // teste 2
+    //Teste Bruno
+    test("Testar 12+34+56", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -47,7 +49,8 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.error).toBeFalsy()
     })
 
-    test("Testar 456-123", ()=>{ //teste 3
+    //Teste Bruno
+    test("Testar 456-123", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -64,8 +67,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    
-    test("Testar 65-43-21", ()=>{ //teste 4
+
+    //Teste Bruno
+    test("Testar 65-43-21", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -87,7 +91,8 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.error).toBeFalsy()
     })
     
-    test("Testar 1420/5", ()=>{ //teste 5
+    //Teste Bruno
+    test("Testar 1420/5", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -105,7 +110,8 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.error).toBeFalsy()
     })
 
-    test("Testar 12*3", ()=>{ //teste 6
+    //Teste Bruno
+    test("Testar 12*3", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -122,7 +128,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 12*3*3", ()=>{ //teste 7
+
+    //Teste Gabriel
+    test("Testar 12*3*3", ()=>{ 
         cpu.reinicie();
         [Digito.UM, Digito.DOIS].forEach((element) => {
             cpu.recebaDigito(element);
@@ -141,7 +149,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 1420/5", ()=>{ //teste 8
+
+    //Teste Eduardo
+    test("Testar 1420/5 = /4", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -162,7 +172,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 12*3*3", ()=>{ //teste 9
+
+    //Teste Gabriel
+    test("Testar 12*3*3", ()=>{
         cpu.reinicie();
         [Digito.NOVE].forEach((element) => {
             cpu.recebaDigito(element);
@@ -173,19 +185,22 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 100%", ()=>{ //teste 10
+    
+    //Teste Eduardo
+    test("Testar 100%", ()=>{
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
             cpu.recebaDigito(element);
         });
         cpu.recebaOperacao(Operação.PERCENTUAL);
-        // cpu.recebaControle(Controle.IGUAL);
         expect(tela.digitos).toBe("0")
         expect(tela.sinal).toBe(Sinal.POSITIVO)
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123-456", ()=>{//teste 11
+
+    //Teste Gabriel
+    test("Testar 123-456", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -201,7 +216,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 4.56+1.23", ()=>{ //teste 3
+
+    //Teste Gabriel
+    test("Testar 4.56+1.23", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -226,7 +243,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 4.56 x 1.23", ()=>{ //teste 3
+
+    //Teste Gabriel
+    test("Testar 4.56 x 1.23", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -251,7 +270,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 4.56-1.23", ()=>{ //teste 3
+
+    //Teste Gabriel
+    test("Testar 4.56-1.23", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -276,7 +297,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 4.56/1.2", ()=>{ //teste 3
+
+    //Teste Gabriel
+    test("Testar 4.56/1.2", ()=>{
         cpu.reinicie();
         tela.limpe();
 
@@ -301,7 +324,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 100+10%", ()=>{ //teste 12
+
+    //Teste Eduardo
+    test("Testar 100+10%", ()=>{
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
             cpu.recebaDigito(element);
@@ -312,13 +337,14 @@ describe("Testando minha calculadora", ()=> { //teste 1
             }); 
         cpu.recebaOperacao(Operação.PERCENTUAL);
         
-        // cpu.recebaControle(Controle.IGUAL);
         expect(tela.digitos).toBe("110")
         expect(tela.sinal).toBe(Sinal.POSITIVO)
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 100-10%", ()=>{ //teste 12 + 1
+
+    //Teste Eduardo
+    test("Testar 100-10%", ()=>{
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
             cpu.recebaDigito(element);
@@ -329,13 +355,14 @@ describe("Testando minha calculadora", ()=> { //teste 1
             }); 
         cpu.recebaOperacao(Operação.PERCENTUAL);
         
-        // cpu.recebaControle(Controle.IGUAL);
         expect(tela.digitos).toBe("90")
         expect(tela.sinal).toBe(Sinal.POSITIVO)
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 100*10%", ()=>{ //teste 14
+
+    //Teste Eduardo
+    test("Testar 100*10%", ()=>{
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
             cpu.recebaDigito(element);
@@ -346,13 +373,14 @@ describe("Testando minha calculadora", ()=> { //teste 1
             }); 
         cpu.recebaOperacao(Operação.PERCENTUAL);
         
-        // cpu.recebaControle(Controle.IGUAL);
         expect(tela.digitos).toBe("10")
         expect(tela.sinal).toBe(Sinal.POSITIVO)
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 100/10%", ()=>{ //teste 15
+
+    //Teste Eduardo
+    test("Testar 100/10%", ()=>{
         cpu.reinicie();
         [Digito.UM, Digito.ZERO, Digito.ZERO].forEach((element) => {
             cpu.recebaDigito(element);
@@ -363,13 +391,14 @@ describe("Testando minha calculadora", ()=> { //teste 1
             }); 
         cpu.recebaOperacao(Operação.PERCENTUAL);
         
-        // cpu.recebaControle(Controle.IGUAL);
         expect(tela.digitos).toBe("10000")
         expect(tela.sinal).toBe(Sinal.POSITIVO)
         expect(tela.memoria).toBeFalsy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 M+ + 1", ()=>{//teste 16
+
+    //Teste Gabriel
+    test("Testar 123 M+ + 1", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -386,7 +415,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 M+ 1", ()=>{//teste 17
+
+    //Teste Gabriel
+    test("Testar 123 M+ 1", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -402,7 +433,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 M+ 1 + 1", ()=>{//teste 18
+
+    //Teste Eduardo
+    test("Testar 123 M+ 1 + 1", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -422,7 +455,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 M+ + 1 M+", ()=>{//teste 18
+
+    //Teste Gabriel
+    test("Testar 123 M+ + 1 M+", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -440,7 +475,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 = 1 =", ()=>{//teste 18
+
+    //Teste Gabriel
+    test("Testar 123 = 1 =", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -456,7 +493,9 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.memoria).toBeTruthy()
         expect(tela.error).toBeFalsy()
     })
-    test("Testar 123 M+ + 1 MRC", ()=>{//teste 18
+
+    //Teste Eduardo
+    test("Testar 123 M+ + 1 MRC", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
@@ -475,7 +514,8 @@ describe("Testando minha calculadora", ()=> { //teste 1
         expect(tela.error).toBeFalsy()
     })
     
-    test("Testar 123 M+ + 1 MRC 1", ()=>{//teste 18
+    //Teste Gabriel
+    test("Testar 123 M+ + 1 MRC 1", ()=>{
         cpu.reinicie();
         tela.limpe();
         [Digito.UM, Digito.DOIS, Digito.TRÊS].forEach((element) => {
